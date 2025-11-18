@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Journal Details · AE-FUNAI Journals</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav class="nav">
+            <a href="index.html" class="logo">
+                <img src="cropped-funai_Logo-1.png" alt="AE-FUNAI">
+                <span>AE-FUNAI Journals</span>
+            </a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="browse.html" class="active">Browse</a>
+                <a href="login.html">Login</a>
+                <a href="submit.html">Submit</a>
+                <a href="register.html" class="btn btn-outline">Create Account</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="container form-card" id="journalDetails">
+            <p class="badge">Journal Details</p>
+            <h1 class="section-title" id="detailTitle">Loading...</h1>
+            <div class="journal-meta" style="margin-bottom:1rem;">
+                <span id="detailAuthor" class="badge">Author</span>
+                <span id="detailDate" class="pill">Uploaded date</span>
+            </div>
+            <p id="detailAbstract"></p>
+            <div class="journal-actions" style="margin-top:1.5rem;">
+                <a id="detailDownload" href="#" class="btn btn-primary" target="_blank" rel="noopener">Download PDF</a>
+                <a href="browse.html" class="btn btn-outline">← Back to Browse</a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; <span id="year"></span> Alex Ekwueme Federal University Ndufu-Alike.</p>
+    </footer>
+
+    <script src="script.js" defer></script>
+</body>
+</html>
+

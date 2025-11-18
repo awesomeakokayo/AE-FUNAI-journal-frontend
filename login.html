@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login · AE-FUNAI Journals</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav class="nav">
+            <a href="index.html" class="logo">
+                <img src="cropped-funai_Logo-1.png" alt="AE-FUNAI">
+                <span>AE-FUNAI Journals</span>
+            </a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="browse.html">Browse</a>
+                <a href="login.html" class="active">Login</a>
+                <a href="submit.html">Submit</a>
+                <a href="register.html" class="btn btn-outline">Create Account</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="container form-card">
+            <h1 class="section-title" style="text-align:center;">Welcome Back</h1>
+            <p class="section-subtitle" style="text-align:center;">Access your dashboard to upload and manage journals.</p>
+            <form id="loginForm" novalidate>
+                <div>
+                    <label for="loginEmail">Email</label>
+                    <input type="email" id="loginEmail" name="email" placeholder="you@funai.edu.ng" required>
+                </div>
+                <div>
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" name="password" placeholder="Enter your password" minlength="6" required>
+                </div>
+                <div id="loginFeedback" class="alert" style="display:none;"></div>
+                <button type="submit" class="btn btn-primary">Login</button>
+                <div class="form-footer">
+                    <span>New to the platform?</span>
+                    <a href="register.html">Create an account</a>
+                </div>
+            </form>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; <span id="year"></span> Alex Ekwueme Federal University Ndufu-Alike.</p>
+    </footer>
+
+    <script src="script.js" defer></script>
+</body>
+</html>
+

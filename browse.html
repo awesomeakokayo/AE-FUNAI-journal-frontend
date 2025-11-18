@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browse Journals · AE-FUNAI Journals</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav class="nav">
+            <a href="index.html" class="logo">
+                <img src="cropped-funai_Logo-1.png" alt="AE-FUNAI">
+                <span>AE-FUNAI Journals</span>
+            </a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="browse.html" class="active">Browse</a>
+                <a href="login.html">Login</a>
+                <a href="submit.html">Submit</a>
+                <a href="register.html" class="btn btn-outline">Create Account</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="container">
+            <h1 class="section-title">Browse AE-FUNAI Journals</h1>
+            <p class="section-subtitle">Search by title, author, or browse recent uploads.</p>
+
+            <div class="search-bar">
+                <span class="icon">🔍</span>
+                <input type="search" id="searchInput" placeholder="Search by title or author">
+            </div>
+
+            <div id="browseResults" class="journal-list"></div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; <span id="year"></span> Alex Ekwueme Federal University Ndufu-Alike.</p>
+    </footer>
+
+    <script src="script.js" defer></script>
+</body>
+</html>
+

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login · AE-FUNAI Journals</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <header>
+        <nav class="nav">
+            <a href="../index.html" class="logo">
+                <img src="../cropped-funai_Logo-1.png" alt="AE-FUNAI">
+                <span>AE-FUNAI Journals</span>
+            </a>
+            <div class="nav-links">
+                <a href="dashboard.html">Home</a>
+                <a href="my-journals.html">Browse</a>
+                <a href="../login.html">User Login</a>
+                <a href="login.html" class="active">Admin Login</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="container form-card">
+            <h1 class="section-title" style="text-align:center;">Admin Login</h1>
+            <p class="section-subtitle" style="text-align:center;">Access the admin panel to review submissions and manage journals.</p>
+            <form id="adminLoginForm" novalidate>
+                <div>
+                    <label for="adminUsername">Username</label>
+                    <input type="text" id="adminUsername" name="username" placeholder="Admin username" required>
+                </div>
+                <div>
+                    <label for="adminPassword">Password</label>
+                    <input type="password" id="adminPassword" name="password" placeholder="Admin password" required>
+                </div>
+                <div id="adminLoginFeedback" class="alert" style="display:none;"></div>
+                <button type="submit" class="btn btn-primary">Login as Admin</button>
+                <div class="form-footer">
+                    <span>Not an admin?</span>
+                    <a href="../login.html">User login</a>
+                </div>
+            </form>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; <span id="year"></span> Alex Ekwueme Federal University Ndufu-Alike.</p>
+    </footer>
+
+    <script src="../script.js" defer></script>
+</body>
+</html>
+

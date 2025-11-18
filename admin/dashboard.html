@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard · AE-FUNAI Journals</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <header>
+        <nav class="nav">
+            <a href="../index.html" class="logo">
+                <img src="../cropped-funai_Logo-1.png" alt="AE-FUNAI">
+                <span>AE-FUNAI Journals</span>
+            </a>
+            <div class="nav-links">
+                <a href="index.html" class="active">Admin Dashboard</a>
+                <a href="upload.html">Upload Journal</a>
+                <a href="my-journals.html">Journals</a>
+                <a href="../login.html" data-action="logout">Logout</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="container">
+            <div class="hero-card" style="margin-bottom:2rem;">
+                <p class="badge">Admin Panel</p>
+                <h1 id="welcomeMessage">Admin Dashboard</h1>
+                <p>Review journal submissions and manage published journals.</p>
+            </div>
+
+            <div class="container">
+                <h2 class="section-title">Journal Submissions</h2>
+                <div style="margin-bottom: 1rem;">
+                    <label for="statusFilter" style="margin-right: 1rem;">Filter by status:</label>
+                    <select id="statusFilter" style="padding: 0.5rem; border-radius: 0.5rem; border: 1px solid var(--border);">
+                        <option value="">All</option>
+                        <option value="pending">Pending</option>
+                        <option value="approved">Approved</option>
+                        <option value="rejected">Rejected</option>
+                    </select>
+                </div>
+                <div id="adminSubmissionsList" class="journal-list"></div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; <span id="year"></span> Alex Ekwueme Federal University Ndufu-Alike.</p>
+    </footer>
+
+    <script src="../script.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Journal · AE-FUNAI Journals</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav class="nav">
+            <a href="index.html" class="logo">
+                <img src="cropped-funai_Logo-1.png" alt="AE-FUNAI">
+                <span>AE-FUNAI Journals</span>
+            </a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="browse.html">Browse</a>
+                <a href="login.html">Login</a>
+                <a href="submit.html" class="active">Submit</a>
+                <a href="register.html" class="btn btn-outline">Create Account</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="container form-card">
+            <h1 class="section-title" style="text-align:center;">Submit Journal for Review</h1>
+            <p class="section-subtitle" style="text-align:center;">Submit your journal in DOC, DOCX, or PDF format. It will be sent for review and published if approved.</p>
+            <form id="submitForm" novalidate>
+                <div>
+                    <label for="authorName">Author Name</label>
+                    <input type="text" id="authorName" name="author" placeholder="Primary author full name" required>
+                </div>
+                <div>
+                    <label for="paperTitle">Paper Title</label>
+                    <input type="text" id="paperTitle" name="title" placeholder="e.g. Renewable Energy Adoption in Rural Nigeria" required>
+                </div>
+                <div>
+                    <label for="abstract">Abstract / Short Description</label>
+                    <textarea id="abstract" name="abstract" maxlength="1500" placeholder="Summarize your paper in 150-200 words." required></textarea>
+                </div>
+                <div>
+                    <label for="fileUpload">Upload Document</label>
+                    <div class="file-input-wrapper">
+                        <label class="file-label" for="fileUpload">
+                            <span class="icon">📄</span>
+                            <div>
+                                <strong>Choose Document</strong>
+                                <p style="color:var(--muted); margin:0;">Max 15MB · DOC, DOCX, or PDF</p>
+                            </div>
+                        </label>
+                        <input type="file" id="fileUpload" name="file" accept=".doc,.docx,.pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/pdf" required>
+                    </div>
+                </div>
+                <div id="submitFeedback" class="alert" style="display:none;"></div>
+                <button type="submit" class="btn btn-primary">Submit for Review</button>
+            </form>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; <span id="year"></span> Alex Ekwueme Federal University Ndufu-Alike.</p>
+    </footer>
+
+    <script src="script.js" defer></script>
+</body>
+</html>
+

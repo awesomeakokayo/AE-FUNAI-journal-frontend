@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Journals · AE-FUNAI Journals</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <header>
+        <nav class="nav">
+            <a href="index.html" class="logo">
+                <img src="cropped-funai_Logo-1.png" alt="AE-FUNAI">
+                <span>AE-FUNAI Journals</span>
+            </a>
+            <div class="nav-links">
+                <a href="index.html">Admin Dashboard</a>
+                <a href="upload.html">Upload Journal</a>
+                <a href="my-journals.html" class="active">Journals</a>
+                <a href="../login.html" data-action="logout">Logout</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="container">
+            <h1 class="section-title">My Uploaded Journals</h1>
+            <p class="section-subtitle">Manage your submissions. Delete removes them from this list locally.</p>
+            <div id="myJournalsList" class="journal-list"></div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; <span id="year"></span> Alex Ekwueme Federal University Ndufu-Alike.</p>
+    </footer>
+
+    <script src="../script.js" defer></script>
+</body>
+</html>
+
