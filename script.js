@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://localhost:8000';
+const API_BASE_URL = "https://ae-funai-journal-backend.fly.dev/";
 const TOKEN_KEY = 'journal_auth_token';
 const USER_KEY = 'journal_user_data';
 
