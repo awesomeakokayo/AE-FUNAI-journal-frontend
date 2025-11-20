@@ -2,7 +2,6 @@ const API_BASE_URL = "https://ae-funai-journal-backend.onrender.com";
 const TOKEN_KEY = 'journal_auth_token';
 const USER_KEY = 'journal_user_data';
 
-// ========== Utility Functions ==========
 const formatDate = (isoString) => {
     if (!isoString) return 'Unknown date';
     const date = new Date(isoString);
@@ -409,10 +408,10 @@ function initLoginForm() {
             const user = await api.getCurrentUser();
             setUser(user);
             
-            showFeedback(feedbackEl, 'success', 'Login successful! Redirecting to dashboard...');
+            showFeedback(feedbackEl, 'success', 'Login successful! Redirecting to Submit...');
             
             setTimeout(() => {
-                window.location.href = 'dashboard.html';
+                window.location.href = 'submit.html';
             }, 1200);
         } catch (error) {
             showFeedback(feedbackEl, 'error', error.message || 'Login failed. Please check your credentials.');
@@ -759,7 +758,7 @@ function initAdminSubmissionsPage() {
             listContainer.querySelectorAll('[data-action="approve-upload"]').forEach(btn => {
                 btn.addEventListener('click', () => {
                     const submissionId = btn.dataset.id;
-                    window.location.href = `admin/upload.html?submission_id=${submissionId}`;
+                    window.location.href = `upload.html?submission_id=${submissionId}`;
                 });
             });
         } catch (error) {
