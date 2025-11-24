@@ -434,7 +434,7 @@ function initLoginForm() {
             showFeedback(feedbackEl, 'success', 'Login successful! Redirecting to dashboard...');
             
             setTimeout(() => {
-                window.location.href = 'dashboard.html';
+                window.location.href = 'index.html';
             }, 1200);
         } catch (error) {
             showFeedback(feedbackEl, 'error', error.message || 'Login failed. Please check your credentials.');
