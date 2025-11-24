@@ -37,6 +37,13 @@ const truncateText = (text = '', maxLength = 150) => {
     return `${text.slice(0, maxLength)}…`;
 };
 
+const extractFilenameFromHeader = (headerValue, fallbackName) => {
+    if (!headerValue) return fallbackName;
+    const match = headerValue.match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/i);
+    if (!match || !match[1]) return fallbackName;
+    return match[1].replace(/['"]/g, '').trim() || fallbackName;
+};
+
 // ========== Token Management ==========
 const getToken = () => localStorage.getItem(TOKEN_KEY);
 const setToken = (token) => localStorage.setItem(TOKEN_KEY, token);
@@ -236,6 +243,38 @@ const api = {
     async listJournalsByCategory(category) {
         return apiRequest(`/journals?category=${encodeURIComponent(category)}`, { skipAuth: true });
     },
+};
+
+const downloadSubmissionFile = async (submissionId) => {
+    const token = getToken();
+    if (!token) {
+        throw new Error('Please login again to download this submission.');
+    }
+
+    const response = await fetch(`${API_BASE_URL}/admin/submissions/${submissionId}/download`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+
+    if (!response.ok) {
+        const errorText = await response.text().catch(() => null);
+        throw new Error(errorText || `Failed to download submission (HTTP ${response.status}).`);
+    }
+
+    const blob = await response.blob();
+    const filename = extractFilenameFromHeader(
+        response.headers.get('Content-Disposition'),
+        `submission-${submissionId}.pdf`
+    );
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
 };
 
 // ========== Authentication Guards ==========
@@ -738,6 +777,17 @@ function initAdminSubmissionsPage() {
     if (!listContainer) return;
     
     const statusFilter = document.getElementById('statusFilter');
+
+    const ensureFeedbackEl = () => {
+        let feedbackEl = listContainer.parentElement.querySelector('.alert');
+        if (!feedbackEl) {
+            feedbackEl = document.createElement('div');
+            feedbackEl.className = 'alert';
+            feedbackEl.style.display = 'block';
+            listContainer.parentElement.insertBefore(feedbackEl, listContainer);
+        }
+        return feedbackEl;
+    };
     
     const render = async (filter = null) => {
         try {
@@ -768,7 +818,7 @@ function initAdminSubmissionsPage() {
                     </div>
                     ${sub.abstract ? `<p>${truncateText(sub.abstract, 150)}</p>` : ''}
                     <div class="journal-actions">
-                        <a href="${api.getSubmissionDownloadUrl(sub.id)}" class="btn btn-outline" target="_blank" rel="noopener">Download</a>
+                        <button class="btn btn-outline" data-action="download-submission" data-id="${sub.id}">Download</button>
                         ${sub.status === 'pending' ? `
                             <button class="btn btn-primary" data-id="${sub.id}" data-action="approve-upload">Approve & Upload</button>
                         ` : ''}
@@ -776,6 +826,26 @@ function initAdminSubmissionsPage() {
                 </article>
             `;
             }).join('');
+
+            listContainer.querySelectorAll('[data-action="download-submission"]').forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    const submissionId = btn.dataset.id;
+                    const originalText = btn.textContent;
+
+                    btn.disabled = true;
+                    btn.textContent = 'Downloading...';
+
+                    try {
+                        await downloadSubmissionFile(submissionId);
+                        showFeedback(ensureFeedbackEl(), 'success', 'Download started...');
+                    } catch (error) {
+                        showFeedback(ensureFeedbackEl(), 'error', error.message || 'Failed to download submission.');
+                    } finally {
+                        btn.disabled = false;
+                        btn.textContent = originalText;
+                    }
+                });
+            });
             
             // Add event listeners for approve buttons
             listContainer.querySelectorAll('[data-action="approve-upload"]').forEach(btn => {
@@ -795,27 +865,11 @@ function initAdminSubmissionsPage() {
                     
                     try {
                         await api.approveAndPublishSubmission(submissionId, category || null);
-                        // Create or find feedback element
-                        let feedbackEl = listContainer.parentElement.querySelector('.alert');
-                        if (!feedbackEl) {
-                            feedbackEl = document.createElement('div');
-                            feedbackEl.className = 'alert';
-                            feedbackEl.style.display = 'block';
-                            listContainer.parentElement.insertBefore(feedbackEl, listContainer);
-                        }
-                        showFeedback(feedbackEl, 'success', 'Submission approved and published successfully!');
+                        showFeedback(ensureFeedbackEl(), 'success', 'Submission approved and published successfully!');
                         // Reload submissions
                         setTimeout(() => render(statusFilter?.value || null), 1500);
                     } catch (error) {
-                        // Create or find feedback element
-                        let feedbackEl = listContainer.parentElement.querySelector('.alert');
-                        if (!feedbackEl) {
-                            feedbackEl = document.createElement('div');
-                            feedbackEl.className = 'alert';
-                            feedbackEl.style.display = 'block';
-                            listContainer.parentElement.insertBefore(feedbackEl, listContainer);
-                        }
-                        showFeedback(feedbackEl, 'error', error.message || 'Failed to publish submission.');
+                        showFeedback(ensureFeedbackEl(), 'error', error.message || 'Failed to publish submission.');
                         btn.disabled = false;
                         btn.textContent = 'Approve & Publish';
                     }
