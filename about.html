@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About · AE-FUNAI Journals</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav class="nav">
+            <a href="index.html" class="logo">
+                <img src="cropped-funai_Logo-1.png" alt="AE-FUNAI">
+                <span>AE-FUNAI Journals</span>
+            </a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="submit.html" data-auth="hide-if-authenticated">Submit</a>
+                <a href="current.html">Current</a>
+                <a href="archives.html">Archives</a>
+                <a href="browse.html">Browse</a>
+                <a href="about.html" class="active">About</a>
+                <a href="login.html" data-auth="show-if-authenticated" style="display:none;">Login</a>
+                <a href="submit.html" data-auth="show-if-authenticated" style="display:none;">Submit</a>
+                <a href="register.html" class="btn btn-outline" data-auth="hide-if-authenticated">Create Account</a>
+                <a href="#" data-action="logout" data-auth="show-if-authenticated" class="btn btn-outline" style="display:none;">Logout</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="container">
+            <div class="hero-card" style="max-width: 800px; margin: 0 auto;">
+                <h1 class="section-title">About AE-FUNAI Journal Platform</h1>
+                <p class="section-subtitle">A digital repository for academic research and publications</p>
+                
+                <div style="text-align: left; line-height: 1.8;">
+                    <h2 style="color: var(--primary); margin-top: 2rem; margin-bottom: 1rem;">Our Mission</h2>
+                    <p>The AE-FUNAI Journal Platform serves as a centralized hub for students, lecturers, and researchers to share, discover, and access academic publications. We aim to foster knowledge sharing and academic collaboration within the university community.</p>
+                    
+                    <h2 style="color: var(--primary); margin-top: 2rem; margin-bottom: 1rem;">Features</h2>
+                    <ul style="list-style: disc; padding-left: 2rem; margin-bottom: 1.5rem;">
+                        <li>Easy journal submission and review process</li>
+                        <li>Public access to published research</li>
+                        <li>Category-based organization</li>
+                        <li>Search and browse functionality</li>
+                        <li>Secure file storage and management</li>
+                    </ul>
+                    
+                    <h2 style="color: var(--primary); margin-top: 2rem; margin-bottom: 1rem;">Contact</h2>
+                    <p>For inquiries, support, or feedback, please contact:</p>
+                    <p><strong>Email:</strong> <a href="mailto:research@funai.edu.ng">research@funai.edu.ng</a></p>
+                    <p><strong>Office:</strong> ICT Directorate · Office of Research & Innovation</p>
+                    <p><strong>Institution:</strong> Alex Ekwueme Federal University Ndufu-Alike</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; <span id="year"></span> Alex Ekwueme Federal University Ndufu-Alike.</p>
+    </footer>
+
+    <script src="script.js" defer></script>
+</body>
+</html>
+

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Browse Journals · AE-FUNAI Journals</title>
+    <title>Current Journals · AE-FUNAI Journals</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -16,9 +16,9 @@
             <div class="nav-links">
                 <a href="index.html">Home</a>
                 <a href="submit.html" data-auth="hide-if-authenticated">Submit</a>
-                <a href="current.html">Current</a>
+                <a href="current.html" class="active">Current</a>
                 <a href="archives.html">Archives</a>
-                <a href="browse.html" class="active">Browse</a>
+                <a href="browse.html">Browse</a>
                 <a href="about.html">About</a>
                 <a href="login.html" data-auth="show-if-authenticated" style="display:none;">Login</a>
                 <a href="submit.html" data-auth="show-if-authenticated" style="display:none;">Submit</a>
@@ -30,15 +30,15 @@
 
     <main>
         <section class="container">
-            <h1 class="section-title">Browse AE-FUNAI Journals</h1>
-            <p class="section-subtitle">Search by title, author, or browse recent uploads.</p>
+            <h1 class="section-title">Current Journals</h1>
+            <p class="section-subtitle">All currently published journals from AE-FUNAI researchers.</p>
 
             <div class="search-bar">
                 <span class="icon">🔍</span>
                 <input type="search" id="searchInput" placeholder="Search by title or author">
             </div>
 
-            <div id="browseResults" class="journal-list"></div>
+            <div id="currentResults" class="journal-list"></div>
         </section>
     </main>
 

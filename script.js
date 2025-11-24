@@ -2,6 +2,7 @@ const API_BASE_URL = "https://ae-funai-journal-backend.onrender.com";
 const TOKEN_KEY = 'journal_auth_token';
 const USER_KEY = 'journal_user_data';
 
+// ========== Utility Functions ==========
 const formatDate = (isoString) => {
     if (!isoString) return 'Unknown date';
     const date = new Date(isoString);
@@ -197,13 +198,14 @@ const api = {
         return `${API_BASE_URL}/admin/submissions/${submissionId}/download`;
     },
     
-    async adminUploadJournal(title, authors, abstract, file, submissionId = null) {
+    async adminUploadJournal(title, authors, abstract, file, submissionId = null, category = null) {
         const formData = new FormData();
         formData.append('title', title);
         formData.append('authors', authors);
         if (abstract) formData.append('abstract', abstract);
         formData.append('file', file);
         if (submissionId) formData.append('submission_id', submissionId);
+        if (category) formData.append('category', category);
         
         return apiRequest('/admin/journals/upload', {
             method: 'POST',
@@ -215,6 +217,24 @@ const api = {
         return apiRequest(`/admin/journals/${journalId}`, {
             method: 'DELETE',
         });
+    },
+    
+    async approveAndPublishSubmission(submissionId, category = null) {
+        const formData = new FormData();
+        if (category) formData.append('category', category);
+        
+        return apiRequest(`/admin/submissions/${submissionId}/approve-publish`, {
+            method: 'POST',
+            body: formData,
+        });
+    },
+    
+    async getCategories() {
+        return apiRequest('/journals/categories', { skipAuth: true });
+    },
+    
+    async listJournalsByCategory(category) {
+        return apiRequest(`/journals?category=${encodeURIComponent(category)}`, { skipAuth: true });
     },
 };
 
@@ -313,6 +333,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     initDetailsPage();
     initMySubmissionsPage();
     initAdminPages();
+    initHomePage();
+    initArchivesPage();
+    initCurrentPage();
 });
 
 // ========== Form Handlers ==========
@@ -361,12 +384,12 @@ function initRegisterForm() {
             
             await api.register(fullName, email, password);
             
-            showFeedback(feedbackEl, 'success', 'Account created successfully! Redirecting to login...');
+            showFeedback(feedbackEl, 'success', 'Account created successfully! Please check your email to verify your account. Redirecting to login...');
             registerForm.reset();
             
             setTimeout(() => {
                 window.location.href = 'login.html';
-            }, 1500);
+            }, 3000);
         } catch (error) {
             showFeedback(feedbackEl, 'error', error.message || 'Registration failed. Please try again.');
             const submitButton = registerForm.querySelector('button[type="submit"]');
@@ -408,10 +431,10 @@ function initLoginForm() {
             const user = await api.getCurrentUser();
             setUser(user);
             
-            showFeedback(feedbackEl, 'success', 'Login successful! Redirecting to Submit...');
+            showFeedback(feedbackEl, 'success', 'Login successful! Redirecting to dashboard...');
             
             setTimeout(() => {
-                window.location.href = 'submit.html';
+                window.location.href = 'dashboard.html';
             }, 1200);
         } catch (error) {
             showFeedback(feedbackEl, 'error', error.message || 'Login failed. Please check your credentials.');
@@ -756,9 +779,46 @@ function initAdminSubmissionsPage() {
             
             // Add event listeners for approve buttons
             listContainer.querySelectorAll('[data-action="approve-upload"]').forEach(btn => {
-                btn.addEventListener('click', () => {
+                btn.addEventListener('click', async () => {
                     const submissionId = btn.dataset.id;
-                    window.location.href = `upload.html?submission_id=${submissionId}`;
+                    const submission = submissions.find(s => s.id == submissionId);
+                    
+                    if (!submission) return;
+                    
+                    // Ask for category (optional)
+                    const category = prompt('Enter category (optional, press Cancel to skip):');
+                    if (category === null) return; // User cancelled
+                    
+                    // Disable button
+                    btn.disabled = true;
+                    btn.textContent = 'Publishing...';
+                    
+                    try {
+                        await api.approveAndPublishSubmission(submissionId, category || null);
+                        // Create or find feedback element
+                        let feedbackEl = listContainer.parentElement.querySelector('.alert');
+                        if (!feedbackEl) {
+                            feedbackEl = document.createElement('div');
+                            feedbackEl.className = 'alert';
+                            feedbackEl.style.display = 'block';
+                            listContainer.parentElement.insertBefore(feedbackEl, listContainer);
+                        }
+                        showFeedback(feedbackEl, 'success', 'Submission approved and published successfully!');
+                        // Reload submissions
+                        setTimeout(() => render(statusFilter?.value || null), 1500);
+                    } catch (error) {
+                        // Create or find feedback element
+                        let feedbackEl = listContainer.parentElement.querySelector('.alert');
+                        if (!feedbackEl) {
+                            feedbackEl = document.createElement('div');
+                            feedbackEl.className = 'alert';
+                            feedbackEl.style.display = 'block';
+                            listContainer.parentElement.insertBefore(feedbackEl, listContainer);
+                        }
+                        showFeedback(feedbackEl, 'error', error.message || 'Failed to publish submission.');
+                        btn.disabled = false;
+                        btn.textContent = 'Approve & Publish';
+                    }
                 });
             });
         } catch (error) {
@@ -779,6 +839,257 @@ function initAdminSubmissionsPage() {
             render(e.target.value || null);
         });
     }
+}
+
+function initHomePage() {
+    const latestContainer = document.getElementById('latestJournals');
+    if (!latestContainer) return;
+    
+    const loadLatest = async () => {
+        try {
+            const journals = await api.listJournals();
+            const latest = journals.slice(0, 3); // Show only 3 latest
+            
+            if (!latest || latest.length === 0) {
+                latestContainer.innerHTML = `
+                    <div class="empty-state">
+                        <p>No journals published yet. Be the first to submit!</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            latestContainer.innerHTML = latest.map((journal) => `
+                <article class="journal-card">
+                    <h3>${journal.title || 'Untitled'}</h3>
+                    <div class="journal-meta">
+                        <span class="badge">👤 ${journal.authors || 'Unknown Author'}</span>
+                        ${journal.category ? `<span class="badge">📁 ${journal.category}</span>` : ''}
+                        <span class="pill">Published ${formatDate(journal.upload_date)}</span>
+                    </div>
+                    ${journal.abstract ? `<p>${truncateText(journal.abstract, 150)}</p>` : ''}
+                    <div class="journal-actions">
+                        <a href="details.html?id=${journal.id}" class="btn btn-primary">View Details</a>
+                        <a href="${api.getDownloadUrl(journal.id)}" class="btn btn-outline" target="_blank" rel="noopener">Download PDF</a>
+                    </div>
+                </article>
+            `).join('');
+        } catch (error) {
+            latestContainer.innerHTML = `
+                <div class="empty-state">
+                    <p>Failed to load latest journals: ${error.message}</p>
+                </div>
+            `;
+        }
+    };
+    
+    loadLatest();
+}
+
+function initCurrentPage() {
+    const resultsContainer = document.getElementById('currentResults');
+    if (!resultsContainer) return;
+    
+    const searchInput = document.getElementById('searchInput');
+    let searchTimeout;
+    
+    const render = (journals) => {
+        if (!journals || journals.length === 0) {
+            resultsContainer.innerHTML = `
+                <div class="empty-state">
+                    <p>No current journals found. ${searchInput?.value ? 'Try a different search term.' : ''}</p>
+                </div>
+            `;
+            return;
+        }
+        
+        resultsContainer.innerHTML = journals.map((journal) => `
+            <article class="journal-card">
+                <h3>${journal.title || 'Untitled'}</h3>
+                <div class="journal-meta">
+                    <span class="badge">👤 ${journal.authors || 'Unknown Author'}</span>
+                    ${journal.category ? `<span class="badge">📁 ${journal.category}</span>` : ''}
+                    <span class="pill">Published ${formatDate(journal.upload_date)}</span>
+                </div>
+                ${journal.abstract ? `<p>${truncateText(journal.abstract, 150)}</p>` : ''}
+                <div class="journal-actions">
+                    <a href="details.html?id=${journal.id}" class="btn btn-primary">View Details</a>
+                    <a href="${api.getDownloadUrl(journal.id)}" class="btn btn-outline" target="_blank" rel="noopener">Download PDF</a>
+                </div>
+            </article>
+        `).join('');
+    };
+    
+    const loadJournals = async (query = '') => {
+        try {
+            resultsContainer.innerHTML = '<div class="empty-state"><p>Loading journals...</p></div>';
+            const journals = await api.listJournals(query);
+            render(journals);
+        } catch (error) {
+            resultsContainer.innerHTML = `
+                <div class="empty-state">
+                    <p>Failed to load journals: ${error.message}</p>
+                </div>
+            `;
+        }
+    };
+    
+    // Initial load
+    loadJournals();
+    
+    // Search with debounce
+    if (searchInput) {
+        searchInput.addEventListener('input', (event) => {
+            clearTimeout(searchTimeout);
+            const query = event.target.value.trim();
+            searchTimeout = setTimeout(() => {
+                loadJournals(query);
+            }, 500);
+        });
+    }
+}
+
+function initArchivesPage() {
+    const categoriesContainer = document.getElementById('categoriesList');
+    const journalsContainer = document.getElementById('archivesResults');
+    if (!categoriesContainer && !journalsContainer) return;
+    
+    const loadCategories = async () => {
+        try {
+            const categories = await api.getCategories();
+            
+            if (!categories || categories.length === 0) {
+                if (categoriesContainer) {
+                    categoriesContainer.innerHTML = `
+                        <div class="empty-state">
+                            <p>No categories available yet.</p>
+                        </div>
+                    `;
+                }
+                return;
+            }
+            
+            if (categoriesContainer) {
+                categoriesContainer.innerHTML = categories.map(cat => `
+                    <button class="category-btn" data-category="${cat}">
+                        <span class="icon">📁</span>
+                        <span>${cat}</span>
+                    </button>
+                `).join('');
+                
+                // Add click handlers
+                categoriesContainer.querySelectorAll('.category-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const category = btn.dataset.category;
+                        loadJournalsByCategory(category);
+                        // Update active state
+                        categoriesContainer.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                    });
+                });
+            }
+        } catch (error) {
+            console.error('Failed to load categories:', error);
+        }
+    };
+    
+    const loadJournalsByCategory = async (category) => {
+        if (!journalsContainer) return;
+        
+        try {
+            journalsContainer.innerHTML = '<div class="empty-state"><p>Loading journals...</p></div>';
+            const journals = await api.listJournalsByCategory(category);
+            
+            if (!journals || journals.length === 0) {
+                journalsContainer.innerHTML = `
+                    <div class="empty-state">
+                        <p>No journals found in this category.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            journalsContainer.innerHTML = journals.map((journal) => `
+                <article class="journal-card">
+                    <h3>${journal.title || 'Untitled'}</h3>
+                    <div class="journal-meta">
+                        <span class="badge">👤 ${journal.authors || 'Unknown Author'}</span>
+                        <span class="pill">Published ${formatDate(journal.upload_date)}</span>
+                    </div>
+                    ${journal.abstract ? `<p>${truncateText(journal.abstract, 150)}</p>` : ''}
+                    <div class="journal-actions">
+                        <a href="details.html?id=${journal.id}" class="btn btn-primary">View Details</a>
+                        <a href="${api.getDownloadUrl(journal.id)}" class="btn btn-outline" target="_blank" rel="noopener">Download PDF</a>
+                    </div>
+                </article>
+            `).join('');
+        } catch (error) {
+            journalsContainer.innerHTML = `
+                <div class="empty-state">
+                    <p>Failed to load journals: ${error.message}</p>
+                </div>
+            `;
+        }
+    };
+    
+    // Load all journals initially if no category selected
+    if (journalsContainer) {
+        const loadAll = async () => {
+            try {
+                journalsContainer.innerHTML = '<div class="empty-state"><p>Loading all journals...</p></div>';
+                const journals = await api.listJournals();
+                
+                if (!journals || journals.length === 0) {
+                    journalsContainer.innerHTML = `
+                        <div class="empty-state">
+                            <p>No journals available yet.</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                // Group by category
+                const grouped = {};
+                journals.forEach(journal => {
+                    const cat = journal.category || 'Uncategorized';
+                    if (!grouped[cat]) grouped[cat] = [];
+                    grouped[cat].push(journal);
+                });
+                
+                journalsContainer.innerHTML = Object.entries(grouped).map(([category, catJournals]) => `
+                    <div class="category-section">
+                        <h3 class="category-title">${category}</h3>
+                        <div class="journal-list">
+                            ${catJournals.map((journal) => `
+                                <article class="journal-card">
+                                    <h4>${journal.title || 'Untitled'}</h4>
+                                    <div class="journal-meta">
+                                        <span class="badge">👤 ${journal.authors || 'Unknown Author'}</span>
+                                        <span class="pill">Published ${formatDate(journal.upload_date)}</span>
+                                    </div>
+                                    ${journal.abstract ? `<p>${truncateText(journal.abstract, 120)}</p>` : ''}
+                                    <div class="journal-actions">
+                                        <a href="details.html?id=${journal.id}" class="btn btn-primary">View Details</a>
+                                        <a href="${api.getDownloadUrl(journal.id)}" class="btn btn-outline" target="_blank" rel="noopener">Download PDF</a>
+                                    </div>
+                                </article>
+                            `).join('')}
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                journalsContainer.innerHTML = `
+                    <div class="empty-state">
+                        <p>Failed to load journals: ${error.message}</p>
+                    </div>
+                `;
+            }
+        };
+        
+        loadAll();
+    }
+    
+    loadCategories();
 }
 
 function initAdminUploadForm() {
@@ -806,6 +1117,7 @@ function initAdminUploadForm() {
         const title = uploadForm.title.value.trim();
         const authors = uploadForm.authors.value.trim();
         const abstract = uploadForm.abstract.value.trim();
+        const category = uploadForm.category?.value.trim() || null;
         const fileInput = uploadForm.file;
         const file = fileInput.files[0];
         
@@ -829,7 +1141,7 @@ function initAdminUploadForm() {
             submitButton.disabled = true;
             submitButton.textContent = 'Uploading...';
             
-            await api.adminUploadJournal(title, authors, abstract, file, submissionId ? parseInt(submissionId) : null);
+            await api.adminUploadJournal(title, authors, abstract, file, submissionId ? parseInt(submissionId) : null, category);
             
             showFeedback(feedbackEl, 'success', 'Journal uploaded successfully to public site!');
             uploadForm.reset();

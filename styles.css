@@ -444,6 +444,56 @@ textarea {
     font-weight: 600;
 }
 
+.category-filters {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+}
+
+.category-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.category-btn:hover {
+    border-color: var(--primary);
+    background: rgba(97, 206, 112, 0.1);
+}
+
+.category-btn.active {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+}
+
+.category-section {
+    margin-bottom: 3rem;
+}
+
+.category-title {
+    font-size: 1.5rem;
+    color: var(--primary);
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--border);
+}
+
+.archives-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
 @media (max-width: 768px) {
     .nav {
         flex-direction: column;
@@ -452,6 +502,11 @@ textarea {
 
     .nav-links {
         flex-wrap: wrap;
+        gap: 0.75rem;
+    }
+
+    .nav-links a {
+        font-size: 0.9rem;
     }
 
     .hero-card {
@@ -469,5 +524,43 @@ textarea {
 
     .journal-actions {
         flex-direction: column;
+    }
+
+    .category-filters {
+        gap: 0.5rem;
+    }
+
+    .category-btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    .hero-cta {
+        flex-direction: column;
+    }
+
+    .hero-cta .btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .nav-links {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .nav-links a {
+        width: 100%;
+        text-align: center;
+        padding: 0.5rem;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+    }
+
+    .hero-text h1 {
+        font-size: 1.75rem;
     }
 }

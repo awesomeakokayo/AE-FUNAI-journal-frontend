@@ -15,10 +15,15 @@
             </a>
             <div class="nav-links">
                 <a href="index.html" class="active">Home</a>
+                <a href="submit.html" data-auth="hide-if-authenticated">Submit</a>
+                <a href="current.html">Current</a>
+                <a href="archives.html">Archives</a>
                 <a href="browse.html">Browse</a>
-                <a href="login.html">Login</a>
-                <a href="submit.html">Submit</a>
-                <a href="register.html" class="btn btn-outline">Create Account</a>
+                <a href="about.html">About</a>
+                <a href="login.html" data-auth="show-if-authenticated" style="display:none;">Login</a>
+                <a href="submit.html" data-auth="show-if-authenticated" style="display:none;">Submit</a>
+                <a href="register.html" class="btn btn-outline" data-auth="hide-if-authenticated">Create Account</a>
+                <a href="#" data-action="logout" data-auth="show-if-authenticated" class="btn btn-outline" style="display:none;">Logout</a>
             </div>
         </nav>
     </header>
@@ -59,6 +64,19 @@
                         <p>Browse the growing library, search by author or title, and download instantly.</p>
                     </div>
                 </div>
+            </div>
+        </section>
+
+        <section class="container" style="margin-top: 4rem;">
+            <h2 class="section-title">Latest Publications</h2>
+            <p class="section-subtitle">Recently published journals from AE-FUNAI researchers.</p>
+            <div id="latestJournals" class="journal-list" style="margin-bottom: 2rem;">
+                <div class="empty-state">
+                    <p>Loading latest journals...</p>
+                </div>
+            </div>
+            <div style="text-align: center;">
+                <a href="current.html" class="btn btn-primary">View All Current Journals</a>
             </div>
         </section>
 

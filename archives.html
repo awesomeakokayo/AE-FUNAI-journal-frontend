@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Browse Journals · AE-FUNAI Journals</title>
+    <title>Archives · AE-FUNAI Journals</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -17,8 +17,8 @@
                 <a href="index.html">Home</a>
                 <a href="submit.html" data-auth="hide-if-authenticated">Submit</a>
                 <a href="current.html">Current</a>
-                <a href="archives.html">Archives</a>
-                <a href="browse.html" class="active">Browse</a>
+                <a href="archives.html" class="active">Archives</a>
+                <a href="browse.html">Browse</a>
                 <a href="about.html">About</a>
                 <a href="login.html" data-auth="show-if-authenticated" style="display:none;">Login</a>
                 <a href="submit.html" data-auth="show-if-authenticated" style="display:none;">Submit</a>
@@ -30,15 +30,12 @@
 
     <main>
         <section class="container">
-            <h1 class="section-title">Browse AE-FUNAI Journals</h1>
-            <p class="section-subtitle">Search by title, author, or browse recent uploads.</p>
+            <h1 class="section-title">Journal Archives</h1>
+            <p class="section-subtitle">Browse journals organized by category and section.</p>
 
-            <div class="search-bar">
-                <span class="icon">🔍</span>
-                <input type="search" id="searchInput" placeholder="Search by title or author">
-            </div>
+            <div id="categoriesList" class="category-filters" style="margin-bottom: 2rem; display: flex; gap: 1rem; flex-wrap: wrap;"></div>
 
-            <div id="browseResults" class="journal-list"></div>
+            <div id="archivesResults" class="archives-container"></div>
         </section>
     </main>
 

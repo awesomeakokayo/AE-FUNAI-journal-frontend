@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Email · AE-FUNAI Journals</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav class="nav">
+            <a href="index.html" class="logo">
+                <img src="cropped-funai_Logo-1.png" alt="AE-FUNAI">
+                <span>AE-FUNAI Journals</span>
+            </a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="login.html">Login</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="container form-card">
+            <div class="hero-card">
+                <h1 class="section-title" style="text-align:center;">Email Verification</h1>
+                <div id="verificationStatus" class="alert" style="display:none;"></div>
+                <p id="verificationMessage" style="text-align:center; color: var(--muted);">
+                    Verifying your email address...
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; <span id="year"></span> Alex Ekwueme Federal University Ndufu-Alike.</p>
+    </footer>
+
+    <script src="script.js" defer></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const params = new URLSearchParams(window.location.search);
+            const token = params.get('token');
+            const statusEl = document.getElementById('verificationStatus');
+            const messageEl = document.getElementById('verificationMessage');
+            
+            if (!token) {
+                statusEl.style.display = 'block';
+                statusEl.className = 'alert alert-error';
+                statusEl.textContent = 'No verification token provided.';
+                messageEl.textContent = 'Please check your email for the verification link.';
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/verify-email?token=${token}`);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    statusEl.style.display = 'block';
+                    statusEl.className = 'alert alert-success';
+                    statusEl.textContent = 'Email verified successfully!';
+                    messageEl.textContent = 'You can now log in to your account.';
+                    
+                    setTimeout(() => {
+                        window.location.href = 'login.html';
+                    }, 2000);
+                } else {
+                    throw new Error(data.detail || 'Verification failed');
+                }
+            } catch (error) {
+                statusEl.style.display = 'block';
+                statusEl.className = 'alert alert-error';
+                statusEl.textContent = error.message || 'Verification failed. The token may be invalid or expired.';
+                messageEl.textContent = 'Please request a new verification email or contact support.';
+            }
+        });
+    </script>
+</body>
+</html>
+
