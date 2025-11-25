@@ -59,7 +59,7 @@ const isAuthenticated = () => !!getToken();
 // ========== API Helper Functions ==========
 const apiRequest = async (endpoint, options = {}) => {
     const url = `${API_BASE_URL}${endpoint}`;
-    const token = getToken();
+    const token = options.adminAuth ? getAdminToken() : getToken();
     
     const headers = {
         ...options.headers,
@@ -198,7 +198,7 @@ const api = {
         const endpoint = statusFilter 
             ? `/admin/submissions?status_filter=${statusFilter}`
             : '/admin/submissions';
-        return apiRequest(endpoint);
+        return apiRequest(endpoint, { adminAuth: true});
     },
     
     getSubmissionDownloadUrl(submissionId) {
@@ -510,7 +510,7 @@ function initAdminLoginForm() {
             const response = await api.adminLogin(username, password);
             
             // Store token
-            setToken(response.access_token);
+            setAdminToken(response.access_token);
             
             // Store admin user data
             setUser({
@@ -1212,3 +1212,8 @@ function initAdminUploadForm() {
         }
     });
 }
+
+const ADMIN_TOKEN_KEY = "journal_admin_token";
+const getAdminToken = () => localStorage.getItem(ADMIN_TOKEN_KEY);
+const setAdminToken = (token) => localStorage.setItem(ADMIN_TOKEN_KEY, token);
+const removeAdminToken = () => localStorage.removeItem(ADMIN_TOKEN_KEY);
