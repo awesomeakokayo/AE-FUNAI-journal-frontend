@@ -146,7 +146,7 @@ const api = {
         if (abstract) formData.append('abstract', abstract);
         formData.append('file', file);
         
-        return apiRequest('/journals/upload', {
+        return apiRequest('/admin/journals/upload', {
             method: 'POST',
             body: formData,
         });
