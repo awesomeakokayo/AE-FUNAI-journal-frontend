@@ -214,15 +214,17 @@ const api = {
         if (submissionId) formData.append('submission_id', submissionId);
         if (category) formData.append('category', category);
         
-        return apiRequest('/admin/journals/upload', {
-            method: 'POST',
-            body: formData,
+        return apiRequest("/admin/journals/upload", {
+          method: "POST",
+          body: formData,
+          adminAuth: true,
         });
     },
     
     async adminDeleteJournal(journalId) {
         return apiRequest(`/admin/journals/${journalId}`, {
             method: 'DELETE',
+            adminAuth: tru,
         });
     },
     
@@ -233,6 +235,7 @@ const api = {
         return apiRequest(`/admin/submissions/${submissionId}/approve-publish`, {
             method: 'POST',
             body: formData,
+            adminAuth: true,
         });
     },
     
@@ -245,8 +248,8 @@ const api = {
     },
 };
 
-const downloadSubmissionFile = async (submissionId) => {
-    const token = getToken();
+const downloadSubmissionFile = async (submissionId, useAdmin = true) => {
+    const token = useAdmin ? getAdminToken() : getToken();
     if (!token) {
         throw new Error('Please login again to download this submission.');
     }
