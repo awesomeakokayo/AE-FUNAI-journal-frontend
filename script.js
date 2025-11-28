@@ -224,7 +224,7 @@ const api = {
     async adminDeleteJournal(journalId) {
         return apiRequest(`/admin/journals/${journalId}`, {
             method: 'DELETE',
-            adminAuth: tru,
+            adminAuth: true,
         });
     },
     
@@ -249,16 +249,19 @@ const api = {
 };
 
 const downloadSubmissionFile = async (submissionId, useAdmin = true) => {
-    const token = useAdmin ? getAdminToken() : getToken();
+    const token = getAdminToken() || getToken();
     if (!token) {
-        throw new Error('Please login again to download this submission.');
+      throw new Error("Please login again to download this submission.");
     }
 
-    const response = await fetch(`${API_BASE_URL}/admin/submissions/${submissionId}/download`, {
+    const response = await fetch(
+      `${API_BASE_URL}/admin/submissions/${submissionId}/download`,
+      {
         headers: {
-            Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
-    });
+      }
+    );
 
     if (!response.ok) {
         const errorText = await response.text().catch(() => null);
