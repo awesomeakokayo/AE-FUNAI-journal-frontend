@@ -98,140 +98,186 @@ const apiRequest = async (endpoint, options = {}) => {
 
 // ========== API Endpoints ==========
 const api = {
-  // Auth
-  async register(fullName, email, password) {
-    return apiRequest("/register", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ full_name: fullName, email, password }),
-      skipAuth: true,
-    });
-  },
-
-  async login(email, password) {
-    const formData = new URLSearchParams();
-    formData.append("username", email);
-    formData.append("password", password);
-
-    return apiRequest("/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: formData,
-      skipAuth: true,
-    });
-  },
-
-  async getCurrentUser() {
-    return apiRequest("/users/me");
-  },
-
-  async adminLogin(username, password) {
-    const formData = new URLSearchParams();
-    formData.append("username", username);
-    formData.append("password", password);
-
-    return apiRequest("/admin/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: formData,
-      skipAuth: true,
-    });
-  },
-
-  // adminUploadJournal
-  async adminUploadJournal(
-    title,
-    authors,
-    abstract,
-    file,
-    submissionId = null,
-    category = null
-  ) {
-    const formData = new FormData();
-    formData.append("title", title);
-    formData.append("authors", authors);
-    if (abstract) formData.append("abstract", abstract);
-    formData.append("file", file);
-    if (submissionId) formData.append("submission_id", submissionId);
-    if (category) formData.append("category", category);
-
-    return apiRequest("/admin/journals/upload", {
-      method: "POST",
-      body: formData,
-      adminAuth: true, // <-- use admin token
-    });
-  },
-
-  // adminDeleteJournal
-  async adminDeleteJournal(journalId) {
-    return apiRequest(`/admin/journals/${journalId}`, {
-      method: "DELETE",
-      adminAuth: true,
-    });
-  },
-
-  // approveAndPublishSubmission
-  async approveAndPublishSubmission(submissionId, category = null) {
-    const formData = new FormData();
-    if (category) formData.append("category", category);
-
-    return apiRequest(`/admin/submissions/${submissionId}/approve-publish`, {
-      method: "POST",
-      body: formData,
-      adminAuth: true, // <-- use admin token
-    });
-  },
-
-  async getCategories() {
-    return apiRequest("/journals/categories", { skipAuth: true });
-  },
-
-  async listJournalsByCategory(category) {
-    return apiRequest(`/journals?category=${encodeURIComponent(category)}`, {
-      skipAuth: true,
-    });
-  },
+    // Auth
+    async register(fullName, email, password) {
+        return apiRequest('/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ full_name: fullName, email, password }),
+            skipAuth: true,
+        });
+    },
+    
+    async login(email, password) {
+        const formData = new URLSearchParams();
+        formData.append('username', email);
+        formData.append('password', password);
+        
+        return apiRequest('/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: formData,
+            skipAuth: true,
+        });
+    },
+    
+    async getCurrentUser() {
+        return apiRequest('/users/me');
+    },
+    
+    async adminLogin(username, password) {
+        const formData = new URLSearchParams();
+        formData.append('username', username);
+        formData.append('password', password);
+        
+        return apiRequest('/admin/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: formData,
+            skipAuth: true,
+        });
+    },
+    
+    // Journals
+    async uploadJournal(title, authors, abstract, file) {
+        const formData = new FormData();
+        formData.append('title', title);
+        formData.append('authors', authors);
+        if (abstract) formData.append('abstract', abstract);
+        formData.append('file', file);
+        
+        return apiRequest('/admin/journals/upload', {
+            method: 'POST',
+            body: formData,
+        });
+    },
+    
+    async listJournals(query = '') {
+        const endpoint = query ? `/journals?q=${encodeURIComponent(query)}` : '/journals';
+        return apiRequest(endpoint, { skipAuth: false });
+    },
+    
+    async getJournal(journalId) {
+        return apiRequest(`/journals/${journalId}`, { skipAuth: false });
+    },
+    
+    getDownloadUrl(journalId) {
+        return `${API_BASE_URL}/journals/${journalId}/download`;
+    },
+    
+    async getMyJournals() {
+        return apiRequest('/journals/me');
+    },
+    
+    async deleteJournal(journalId) {
+        return apiRequest(`/journals/${journalId}`, {
+            method: 'DELETE',
+        });
+    },
+    
+    // Submissions (for regular users)
+    async submitJournal(title, authors, abstract, file) {
+        const formData = new FormData();
+        formData.append('title', title);
+        formData.append('authors', authors);
+        if (abstract) formData.append('abstract', abstract);
+        formData.append('file', file);
+        
+        return apiRequest('/submissions/submit', {
+            method: 'POST',
+            body: formData,
+        });
+    },
+    
+    async getMySubmissions() {
+        return apiRequest('/submissions/my');
+    },
+    
+    // Admin endpoints
+    async getSubmissions(statusFilter = null) {
+        const endpoint = statusFilter 
+            ? `/admin/submissions?status_filter=${statusFilter}`
+            : '/admin/submissions';
+        return apiRequest(endpoint, { adminAuth: true});
+    },
+    
+    getSubmissionDownloadUrl(submissionId) {
+        return `${API_BASE_URL}/admin/submissions/${submissionId}/download`;
+    },
+    
+    async adminUploadJournal(title, authors, abstract, file, submissionId = null, category = null) {
+        const formData = new FormData();
+        formData.append('title', title);
+        formData.append('authors', authors);
+        if (abstract) formData.append('abstract', abstract);
+        formData.append('file', file);
+        if (submissionId) formData.append('submission_id', submissionId);
+        if (category) formData.append('category', category);
+        
+        return apiRequest('/admin/journals/upload', {
+            method: 'POST',
+            body: formData,
+        });
+    },
+    
+    async adminDeleteJournal(journalId) {
+        return apiRequest(`/admin/journals/${journalId}`, {
+            method: 'DELETE',
+        });
+    },
+    
+    async approveAndPublishSubmission(submissionId, category = null) {
+        const formData = new FormData();
+        if (category) formData.append('category', category);
+        
+        return apiRequest(`/admin/submissions/${submissionId}/approve-publish`, {
+            method: 'POST',
+            body: formData,
+        });
+    },
+    
+    async getCategories() {
+        return apiRequest('/journals/categories', { skipAuth: true });
+    },
+    
+    async listJournalsByCategory(category) {
+        return apiRequest(`/journals?category=${encodeURIComponent(category)}`, { skipAuth: true });
+    },
 };
 
-const downloadSubmissionFile = async (submissionId, useAdmin = true) => {
-  // default to admin download since this endpoint is admin-only
-  const token = useAdmin ? getAdminToken() : getToken();
-  if (!token) {
-    throw new Error("Please login again to download this submission.");
-  }
-
-  const response = await fetch(
-    `${API_BASE_URL}/admin/submissions/${submissionId}/download`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+const downloadSubmissionFile = async (submissionId) => {
+    const token = getToken();
+    if (!token) {
+        throw new Error('Please login again to download this submission.');
     }
-  );
 
-  if (!response.ok) {
-    const errorText = await response.text().catch(() => null);
-    throw new Error(
-      errorText || `Failed to download submission (HTTP ${response.status}).`
+    const response = await fetch(`${API_BASE_URL}/admin/submissions/${submissionId}/download`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+
+    if (!response.ok) {
+        const errorText = await response.text().catch(() => null);
+        throw new Error(errorText || `Failed to download submission (HTTP ${response.status}).`);
+    }
+
+    const blob = await response.blob();
+    const filename = extractFilenameFromHeader(
+        response.headers.get('Content-Disposition'),
+        `submission-${submissionId}.pdf`
     );
-  }
-
-  const blob = await response.blob();
-  const filename = extractFilenameFromHeader(
-    response.headers.get("Content-Disposition"),
-    `submission-${submissionId}.pdf`
-  );
-  const url = window.URL.createObjectURL(blob);
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = filename;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-  window.URL.revokeObjectURL(url);
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
 };
 
-//  Authentication Guards 
+// ========== Authentication Guards ==========
 const requireAuth = () => {
     if (!isAuthenticated()) {
         window.location.href = 'login.html';
@@ -1171,4 +1217,3 @@ const ADMIN_TOKEN_KEY = "journal_admin_token";
 const getAdminToken = () => localStorage.getItem(ADMIN_TOKEN_KEY);
 const setAdminToken = (token) => localStorage.setItem(ADMIN_TOKEN_KEY, token);
 const removeAdminToken = () => localStorage.removeItem(ADMIN_TOKEN_KEY);
-localStorage.getItem('journal_admin_token')
