@@ -624,13 +624,12 @@ function initBrowsePage() {
             <article class="journal-card">
                 <h3>${journal.title || 'Untitled'}</h3>
                 <div class="journal-meta">
-                    <span class="badge">👤 ${journal.authors || 'Unknown Author'}</span>
+                    <span class="badge"> ${journal.authors || 'Unknown Author'}</span>
                     <span class="pill">Uploaded ${formatDate(journal.upload_date)}</span>
                 </div>
-                <p>${truncateText(journal.abstract || '', 150)}</p>
                 <div class="journal-actions">
                     <a href="details.html?id=${journal.id}" class="btn btn-primary">View Details</a>
-                    <a href="${api.getDownloadUrl(journal.id)}" class="btn btn-outline" target="_blank" rel="noopener">Download PDF</a>
+                    <a href="${api.getDownloadUrl(journal.id)}" class="btn btn-outline" target="_blank" rel="noopener"> <img src='https://img.icons8.com/?size=50&id=299&format=png&color=000000'> PDF</a>
                 </div>
             </article>
         `).join('');
