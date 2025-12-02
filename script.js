@@ -1222,3 +1222,35 @@ const ADMIN_TOKEN_KEY = "journal_admin_token";
 const getAdminToken = () => localStorage.getItem(ADMIN_TOKEN_KEY);
 const setAdminToken = (token) => localStorage.setItem(ADMIN_TOKEN_KEY, token);
 const removeAdminToken = () => localStorage.removeItem(ADMIN_TOKEN_KEY);
+
+// ========== Mobile Menu Functionality ==========
+function initializeMobileMenu() {
+    const menuToggle = document.getElementById('menuToggle');
+    const navLinks = document.getElementById('navLinks');
+    
+    if (!menuToggle || !navLinks) return;
+    
+    menuToggle.addEventListener('click', () => {
+        navLinks.classList.toggle('mobile-menu-active');
+        menuToggle.classList.toggle('active');
+    });
+    
+    // Close menu when a link is clicked
+    navLinks.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            navLinks.classList.remove('mobile-menu-active');
+            menuToggle.classList.remove('active');
+        });
+    });
+    
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.nav')) {
+            navLinks.classList.remove('mobile-menu-active');
+            menuToggle.classList.remove('active');
+        }
+    });
+}
+
+// Initialize mobile menu on page load
+document.addEventListener('DOMContentLoaded', initializeMobileMenu);
