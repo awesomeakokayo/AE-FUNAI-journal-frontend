@@ -378,6 +378,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     initDetailsPage();
     initMySubmissionsPage();
     initAdminPages();
+    initAdminMyJournalsPage();
     initHomePage();
     initArchivesPage();
     initCurrentPage();
@@ -1254,3 +1255,87 @@ function initializeMobileMenu() {
 
 // Initialize mobile menu on page load
 document.addEventListener('DOMContentLoaded', initializeMobileMenu);
+
+// ========== Admin My Journals Page ==========
+function initAdminMyJournalsPage() {
+    const myJournalsContainer = document.getElementById('myJournalsList');
+    if (!myJournalsContainer) return;
+    
+    if (!requireAdmin()) return;
+    
+    const ensureFeedbackEl = () => {
+        let feedbackEl = myJournalsContainer.parentElement.querySelector('.alert');
+        if (!feedbackEl) {
+            feedbackEl = document.createElement('div');
+            feedbackEl.className = 'alert';
+            feedbackEl.style.display = 'none';
+            myJournalsContainer.parentElement.insertBefore(feedbackEl, myJournalsContainer);
+        }
+        return feedbackEl;
+    };
+    
+    const render = async () => {
+        try {
+            myJournalsContainer.innerHTML = '<div class="empty-state"><p>Loading your journals...</p></div>';
+            const journals = await api.listJournals();
+            
+            if (!journals || journals.length === 0) {
+                myJournalsContainer.innerHTML = `
+                    <div class="empty-state">
+                        <p>You have not uploaded any journals yet.</p>
+                        <a href="upload.html" class="btn btn-primary" style="margin-top:1rem;">Upload Journal</a>
+                    </div>
+                `;
+                return;
+            }
+            
+            myJournalsContainer.innerHTML = journals.map((journal) => `
+                <article class="journal-card">
+                    <h3>${journal.title || 'Untitled'}</h3>
+                    <div class="journal-meta">
+                        <span class="badge">👤 ${journal.authors || 'Unknown Author'}</span>
+                        ${journal.category ? `<span class="badge">📁 ${journal.category}</span>` : ''}
+                        <span class="pill">Published ${formatDate(journal.upload_date)}</span>
+                    </div>
+                    ${journal.abstract ? `<p>${truncateText(journal.abstract, 150)}</p>` : ''}
+                    <div class="journal-actions">
+                        <a href="../details.html?id=${journal.id}" class="btn btn-outline">View Details</a>
+                        <a href="${api.getDownloadUrl(journal.id)}" class="btn btn-outline" target="_blank" rel="noopener">Download</a>
+                        <button class="btn btn-outline" style="background-color: #dc2626; color: white; border-color: #dc2626;" data-action="delete-journal" data-id="${journal.id}">Delete</button>
+                    </div>
+                </article>
+            `).join('');
+            
+            // Add delete event listeners
+            myJournalsContainer.querySelectorAll('[data-action="delete-journal"]').forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    const journalId = btn.dataset.id;
+                    const confirmed = confirm('Are you sure you want to delete this journal? This action cannot be undone.');
+                    
+                    if (!confirmed) return;
+                    
+                    btn.disabled = true;
+                    btn.textContent = 'Deleting...';
+                    
+                    try {
+                        await api.adminDeleteJournal(journalId);
+                        showFeedback(ensureFeedbackEl(), 'success', 'Journal deleted successfully!');
+                        setTimeout(() => render(), 1500);
+                    } catch (error) {
+                        showFeedback(ensureFeedbackEl(), 'error', error.message || 'Failed to delete journal.');
+                        btn.disabled = false;
+                        btn.textContent = 'Delete';
+                    }
+                });
+            });
+        } catch (error) {
+            myJournalsContainer.innerHTML = `
+                <div class="empty-state">
+                    <p>Failed to load journals: ${error.message}</p>
+                </div>
+            `;
+        }
+    };
+    
+    render();
+}
