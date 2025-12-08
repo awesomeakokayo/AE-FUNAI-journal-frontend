@@ -957,13 +957,13 @@ function initHomePage() {
                         }
                         <span class="pill">Published ${formatDate(
                           journal.upload_date
-                        )}</span>
+                        // )}</span>
                     </div>
-                    ${
-                      journal.abstract
-                        ? `<p>${truncateText(journal.abstract, 150)}</p>`
-                        : ""
-                    }
+                    // ${
+                    //   journal.abstract
+                    //     ? `<p>${truncateText(journal.abstract, 150)}</p>`
+                    //     : ""
+                    // }
                     <div class="journal-actions">
                         <a href="${api.getDownloadUrl(journal.id)}" class="downloadpdf" target="_blank" rel="noopener"><img class="downloadpdf-icon" src='https://img.icons8.com/?size=15&id=86297&format=png&color=1a5a96'> PDF</a>
                     </div>
