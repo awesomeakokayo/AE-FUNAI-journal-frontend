@@ -301,6 +301,9 @@ textarea{
   min-height:140px;
   resize:vertical;
 }
+.mobile-logo{
+  display: none;
+}
 .form-footer{
   display:flex;
   justify-content:space-between;
@@ -520,8 +523,14 @@ textarea{
   header{
     height: 30vh;
   }
+  .mobile-logo{
+    display: block;
+}
   main{
     height: 70vh;
+  }
+  .downloadpdf{
+    width: 25vw;
   }
   .downloadpdf-icon{
     width: 15px;
