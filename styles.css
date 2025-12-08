@@ -32,13 +32,15 @@ a:hover{
   color: #2b6295;
 }
 .downloadpdf{
+  display: flex;
+  flex-direction: row;
   height: 18px;
   padding: 1rem;
   color: var(--ojs-link-color);
   border: 1px solid var(--ojs-link-color);
 }
 .downloadpdf-icon{
-  width: 10px;
+  width: 20px;
 }
 .issues{
   color: var(--ojs-link-color);
