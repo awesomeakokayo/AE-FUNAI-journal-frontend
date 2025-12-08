@@ -623,14 +623,15 @@ function initBrowsePage() {
         
         resultsContainer.innerHTML = journals.map((journal) => `
             <article class="journal-card">
-                <h3>${journal.title || 'Untitled'}</h3>
+                <h3 class="journal-title"> <a href="details.html?id=${journal.id}">${
+                  journal.title || "Untitled"
+                } </a></h3>
                 <div class="journal-meta">
                     <span class="badge"> ${journal.authors || 'Unknown Author'}</span>
                     <span class="pill">Uploaded ${formatDate(journal.upload_date)}</span>
                 </div>
                 <div class="journal-actions">
-                    <a href="details.html?id=${journal.id}" class="btn btn-primary">View Details</a>
-                    <a href="${api.getDownloadUrl(journal.id)}" class="btn btn-outline" target="_blank" rel="noopener"> <img src='https://img.icons8.com/?size=50&id=299&format=png&color=000000'>▤ PDF</a>
+                    <a href="${api.getDownloadUrl(journal.id)}" class="downloadpdf" target="_blank" rel="noopener"><img src='https://img.icons8.com/?size=100&id=86297&format=png&color=1a5a96'> PDF</a>
                 </div>
             </article>
         `).join('');
@@ -964,9 +965,7 @@ function initHomePage() {
                         : ""
                     }
                     <div class="journal-actions">
-                        <a href="${api.getDownloadUrl(
-                          journal.id
-                        )}" class="btn btn-outline" target="_blank" rel="noopener"> ▤ PDF</a>
+                        <a href="${api.getDownloadUrl(journal.id)}" class="downloadpdf" target="_blank" rel="noopener"><img src='https://img.icons8.com/?size=100&id=86297&format=png&color=1a5a96'> PDF</a>
                     </div>
                 </article>
             `
@@ -1012,7 +1011,7 @@ function initCurrentPage() {
                 ${journal.abstract ? `<p>${truncateText(journal.abstract, 150)}</p>` : ''}
                 <div class="journal-actions">
                     <a href="details.html?id=${journal.id}" class="btn btn-primary">View Details</a>
-                    <a href="${api.getDownloadUrl(journal.id)}" class="btn btn-outline" target="_blank" rel="noopener">▤ PDF</a>
+                    <a href="${api.getDownloadUrl(journal.id)}" class="downloadpdf" target="_blank" rel="noopener"><img src='https://img.icons8.com/?size=100&id=86297&format=png&color=1a5a96'> PDF</a>
                 </div>
             </article>
         `).join('');
