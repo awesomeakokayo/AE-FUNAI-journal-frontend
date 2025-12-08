@@ -32,6 +32,7 @@ a:hover{
   color: #2b6295;
 }
 .downloadpdf{
+  padding: 1rem;
   color: var(--ojs-link-color);
   border: 1px solid var(--ojs-link-color);
 }
