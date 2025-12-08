@@ -965,7 +965,7 @@ function initHomePage() {
                         : ""
                     }
                     <div class="journal-actions">
-                        <a href="${api.getDownloadUrl(journal.id)}" class="downloadpdf" target="_blank" rel="noopener"><img width='15' src='https://img.icons8.com/?size=100&id=86297&format=png&color=1a5a96'> PDF</a>
+                        <a href="${api.getDownloadUrl(journal.id)}" class="downloadpdf" target="_blank" rel="noopener"><img width='5' src='https://img.icons8.com/?size=100&id=86297&format=png&color=1a5a96'> PDF</a>
                     </div>
                 </article>
             `
