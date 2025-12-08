@@ -908,9 +908,8 @@ function initHomePage() {
     const loadLatest = async () => {
         try {
             const journals = await api.listJournals();
-            const latest = journals.slice(0, 7); // Show only 3 latest
             
-            if (!latest || latest.length === 0) {
+            if (!journals || journals.length === 0) {
                 latestContainer.innerHTML = `
                     <div class="empty-state">
                         <p>No journals published yet. Be the first to submit!</p>
@@ -919,21 +918,63 @@ function initHomePage() {
                 return;
             }
             
-            latestContainer.innerHTML = latest.map((journal) => `
-                <article class="journal-card">
-                    <h3>${journal.title || 'Untitled'}</h3>
-                    <div class="journal-meta">
-                        <span class="badge"> ${journal.authors || 'Unknown Author'}</span>
-                        ${journal.category ? `<span class="badge"> ${journal.category}</span>` : ''}
-                        <span class="pill">Published ${formatDate(journal.upload_date)}</span>
+            // Group journals by category and get the latest from each
+            const grouped = {};
+            journals.forEach((journal) => {
+                const category = journal.category || 'Uncategorized';
+                if (!grouped[category]) {
+                    grouped[category] = journal; // Keep only the first (latest) one
+                }
+            });
+            
+            const latestByCategory = Object.values(grouped);
+            
+            if (latestByCategory.length === 0) {
+                latestContainer.innerHTML = `
+                    <div class="empty-state">
+                        <p>No journals published yet. Be the first to submit!</p>
                     </div>
-                    ${journal.abstract ? `<p>${truncateText(journal.abstract, 150)}</p>` : ''}
+                `;
+                return;
+            }
+            
+            latestContainer.innerHTML = latestByCategory
+              .map(
+                (journal) => `
+                <article class="journal-card">
+                    <h3> <a href="details.html?id=${journal.id}">${
+                  journal.title || "Untitled"
+                } </a></h3>
+                    <div class="journal-meta">
+                        <span class="badge">${
+                          journal.authors || "Unknown Author"
+                        }</span>
+                        ${
+                          journal.category
+                            ? `<span class="badge">${journal.category}</span>`
+                            : ""
+                        }
+                        <span class="pill">Published ${formatDate(
+                          journal.upload_date
+                        )}</span>
+                    </div>
+                    ${
+                      journal.abstract
+                        ? `<p>${truncateText(journal.abstract, 150)}</p>`
+                        : ""
+                    }
                     <div class="journal-actions">
-                        <a href="details.html?id=${journal.id}" class="btn btn-primary">View Details</a>
-                        <a href="${api.getDownloadUrl(journal.id)}" class="btn btn-outline" target="_blank" rel="noopener">▤ PDF</a>
+                        <a href="details.html?id=${
+                          journal.id
+                        }" class="btn btn-primary">View Details</a>
+                        <a href="${api.getDownloadUrl(
+                          journal.id
+                        )}" class="btn btn-outline" target="_blank" rel="noopener"> ▤ PDF</a>
                     </div>
                 </article>
-            `).join('');
+            `
+              )
+              .join("");
         } catch (error) {
             latestContainer.innerHTML = `
                 <div class="empty-state">
