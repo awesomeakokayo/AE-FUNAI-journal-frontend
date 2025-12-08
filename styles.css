@@ -28,6 +28,9 @@
 a{
   color: var(--ojs-link-color);
 }
+a:hover{
+  color: #2b6295;
+}
 .issues{
   color: var(--ojs-link-color);
   font-weight: bold;
@@ -335,6 +338,12 @@ textarea{
   display:grid;
   gap:clamp(0.75rem, 2vw, 1.25rem);
   width: 100%;
+}
+.journal-title{
+  color: var(--ojs-link-color);
+}
+.journal-title:hover{
+  color: #2b6295;
 }
 .journal-card{
   border-radius:.3rem;

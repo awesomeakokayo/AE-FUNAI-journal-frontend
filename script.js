@@ -942,7 +942,7 @@ function initHomePage() {
               .map(
                 (journal) => `
                 <article class="journal-card">
-                    <h3> <a href="details.html?id=${journal.id}">${
+                    <h3 class="journal-title"> <a href="details.html?id=${journal.id}">${
                   journal.title || "Untitled"
                 } </a></h3>
                     <div class="journal-meta">
@@ -964,9 +964,6 @@ function initHomePage() {
                         : ""
                     }
                     <div class="journal-actions">
-                        <a href="details.html?id=${
-                          journal.id
-                        }" class="btn btn-primary">View Details</a>
                         <a href="${api.getDownloadUrl(
                           journal.id
                         )}" class="btn btn-outline" target="_blank" rel="noopener"> ▤ PDF</a>
