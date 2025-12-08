@@ -630,7 +630,7 @@ function initBrowsePage() {
                 </div>
                 <div class="journal-actions">
                     <a href="details.html?id=${journal.id}" class="btn btn-primary">View Details</a>
-                    <a href="${api.getDownloadUrl(journal.id)}" class="btn btn-outline" target="_blank" rel="noopener"> <img src='https://img.icons8.com/?size=50&id=299&format=png&color=000000'> PDF</a>
+                    <a href="${api.getDownloadUrl(journal.id)}" class="btn btn-outline" target="_blank" rel="noopener"> <img src='https://img.icons8.com/?size=50&id=299&format=png&color=000000'>▤ PDF</a>
                 </div>
             </article>
         `).join('');
@@ -923,14 +923,14 @@ function initHomePage() {
                 <article class="journal-card">
                     <h3>${journal.title || 'Untitled'}</h3>
                     <div class="journal-meta">
-                        <span class="badge">👤 ${journal.authors || 'Unknown Author'}</span>
-                        ${journal.category ? `<span class="badge">📁 ${journal.category}</span>` : ''}
+                        <span class="badge"> ${journal.authors || 'Unknown Author'}</span>
+                        ${journal.category ? `<span class="badge"> ${journal.category}</span>` : ''}
                         <span class="pill">Published ${formatDate(journal.upload_date)}</span>
                     </div>
                     ${journal.abstract ? `<p>${truncateText(journal.abstract, 150)}</p>` : ''}
                     <div class="journal-actions">
                         <a href="details.html?id=${journal.id}" class="btn btn-primary">View Details</a>
-                        <a href="${api.getDownloadUrl(journal.id)}" class="btn btn-outline" target="_blank" rel="noopener">Download PDF</a>
+                        <a href="${api.getDownloadUrl(journal.id)}" class="btn btn-outline" target="_blank" rel="noopener">▤ PDF</a>
                     </div>
                 </article>
             `).join('');
@@ -967,14 +967,14 @@ function initCurrentPage() {
             <article class="journal-card">
                 <h3>${journal.title || 'Untitled'}</h3>
                 <div class="journal-meta">
-                    <span class="badge">👤 ${journal.authors || 'Unknown Author'}</span>
-                    ${journal.category ? `<span class="badge">📁 ${journal.category}</span>` : ''}
+                    <span class="badge"> ${journal.authors || 'Unknown Author'}</span>
+                    ${journal.category ? `<span class="badge"> ${journal.category}</span>` : ''}
                     <span class="pill">Published ${formatDate(journal.upload_date)}</span>
                 </div>
                 ${journal.abstract ? `<p>${truncateText(journal.abstract, 150)}</p>` : ''}
                 <div class="journal-actions">
                     <a href="details.html?id=${journal.id}" class="btn btn-primary">View Details</a>
-                    <a href="${api.getDownloadUrl(journal.id)}" class="btn btn-outline" target="_blank" rel="noopener">Download PDF</a>
+                    <a href="${api.getDownloadUrl(journal.id)}" class="btn btn-outline" target="_blank" rel="noopener">▤ PDF</a>
                 </div>
             </article>
         `).join('');
@@ -1073,13 +1073,13 @@ function initArchivesPage() {
                 <article class="journal-card">
                     <h3>${journal.title || 'Untitled'}</h3>
                     <div class="journal-meta">
-                        <span class="badge">👤 ${journal.authors || 'Unknown Author'}</span>
+                        <span class="badge"> ${journal.authors || 'Unknown Author'}</span>
                         <span class="pill">Published ${formatDate(journal.upload_date)}</span>
                     </div>
                     ${journal.abstract ? `<p>${truncateText(journal.abstract, 150)}</p>` : ''}
                     <div class="journal-actions">
                         <a href="details.html?id=${journal.id}" class="btn btn-primary">View Details</a>
-                        <a href="${api.getDownloadUrl(journal.id)}" class="btn btn-outline" target="_blank" rel="noopener">Download PDF</a>
+                        <a href="${api.getDownloadUrl(journal.id)}" class="btn btn-outline" target="_blank" rel="noopener">▤ PDF</a>
                     </div>
                 </article>
             `).join('');
@@ -1130,7 +1130,7 @@ function initArchivesPage() {
                                     ${journal.abstract ? `<p>${truncateText(journal.abstract, 120)}</p>` : ''}
                                     <div class="journal-actions">
                                         <a href="details.html?id=${journal.id}" class="btn btn-primary">View Details</a>
-                                        <a href="${api.getDownloadUrl(journal.id)}" class="btn btn-outline" target="_blank" rel="noopener">Download PDF</a>
+                                        <a href="${api.getDownloadUrl(journal.id)}" class="btn btn-outline" target="_blank" rel="noopener">▤ PDF</a>
                                     </div>
                                 </article>
                             `).join('')}

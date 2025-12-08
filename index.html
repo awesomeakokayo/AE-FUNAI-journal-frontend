@@ -13,7 +13,7 @@
                 <img src="cropped-funai_Logo-1.png" alt="AE-FUNAI">
                 <span>AE-FUNAI Journals</span>
             </a>
-            <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">☰</button>
+            <!-- <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">☰</button> -->
             <div class="nav-links" id="navLinks">
                 <a href="index.html" class="active">Home</a>
                 <a href="submit.html" data-auth="hide-if-authenticated">Submit</a>
@@ -30,35 +30,28 @@
     </header>
 
     <main>
-        <section class="container hero">
-            <div class="hero-text">
-                <p class="badge">University Knowledge Commons</p>
-                <h1>Share, Explore, and Access Academic Journals</h1>
-                <p>
-                    A simplified journal system for scholars at AE-FUNAI.
-                    Upload your publications, discover peer submissions, and access curated academic
-                    knowledge across disciplines.
-                </p>
-                <div class="hero-cta">
-                    <a href="register.html" class="btn btn-primary">Create Account</a>
-                    <a href="login.html" class="btn btn-outline">Login</a>
-                    <!-- <a href="browse.html" class="btn btn-outline">Browse Journals</a> -->
-                </div>
-            </div>
-
-        </section>
 
         <section class="container" style="margin-top: 4rem;">
-            <h2 class="section-title">Latest Publications</h2>
-            <p class="section-subtitle">Recently published journals from AE-FUNAI researchers.</p>
+
+            <div class="search-bar">
+                <span class="icon"><img src="search.png"></span>
+                <input type="search" id="searchInput" placeholder="Search by title or author">
+            </div>
+
+            <h2 class="section-title">Current Issue</h2>
+            <p id="sectionSubtitle" class="section-subtitle">Recently published journals from AE-FUNAI researchers.</p>
             <div id="latestJournals" class="journal-list" style="margin-bottom: 2rem;">
                 <div class="empty-state">
                     <p>Loading latest journals...</p>
                 </div>
             </div>
-            <div style="text-align: center;">
-                <a href="current.html" class="btn btn-primary">View All Current Journals</a>
-            </div>
+        </section>
+
+        <section class="container">
+            <h1 class="section-title">Current Journals</h1>
+            <p class="section-subtitle">All currently published journals from AE-FUNAI researchers.</p>
+
+            <div id="currentResults" class="journal-list"></div>
         </section>
         
     </main>

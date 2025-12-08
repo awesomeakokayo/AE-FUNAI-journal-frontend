@@ -8,9 +8,9 @@
   --ojs-text: #222;
 
   /* extended tokens used in the original stylesheet */
-  --background: #e1e1e1;
+  --background: white;
   --text: #222;
-  --primary: #61CE70;
+  --primary: rgba(0, 0, 0, 0.87);
   --primary-dark: #23A455;
   --secondary: #6b7280;
   --muted: #6b7280;
@@ -151,11 +151,7 @@ ul{list-style:none}
   box-shadow:0 15px 30px rgba(15,76,129,0.25);
 }
 .btn-primary:hover{transform:translateY(-2px);background:var(--primary-dark)}
-.btn-outline{
-  border:1px solid white;
-  color:white;
-  background:transparent;
-}
+
 .btn-outline:hover{background:rgba(15,76,129,0.08)}
 
 /* layout container */
@@ -228,7 +224,7 @@ aside{flex:1;min-width:0;min-width:clamp(100%, 100%, 250px)}
   width: 100%;
 }
 .section-subtitle{
-  color:var(--muted);
+  color:var(--primary);
   margin-bottom:clamp(1rem, 3vw, 2rem);
   font-size:clamp(0.9rem, 2vw, 1rem);
 }
@@ -486,7 +482,7 @@ textarea{
 .footer a{color:#fff;font-weight:600}
 
 /* Hamburger menu toggle */
-.menu-toggle{
+/* .menu-toggle{
   display: none;
   background: none;
   border: none;
@@ -506,7 +502,7 @@ textarea{
 }
 
 /* Mobile menu */
-.mobile-menu{
+/* .mobile-menu{
   display: none;
   position: fixed;
   top: 0;
@@ -567,7 +563,7 @@ textarea{
 .mobile-menu-nav a.active{
   background: rgba(97,206,112,0.1);
   color: var(--primary);
-}
+} */ 
 
 /* responsive tweaks */
 @media (max-width:900px){
@@ -577,14 +573,24 @@ textarea{
 }
 
 @media (max-width:768px){
+  header{
+    height: 30vh;
+  }
+  main{
+    height: 70vh;
+  }
+  .nav{
+    background: #23A455;
+    display: flex;
+    flex-direction: column;
+  }
   .nav-links {
-    display: none;
     position: absolute;
     top: 20%;
     left: 0;
     right: 0;
-    background: white;
-    flex-direction: column;
+    background: #23A455;
+    flex-direction: row;
     padding: 1rem;
     box-shadow: var(--shadow);
     border-bottom: 1px solid var(--border);
@@ -633,13 +639,12 @@ textarea{
   }
   .hero{
     gap: 2em;
-    height: calc(70vh);
   }
   .logo img {
-    width: 40vw;
-    height: 40vw;
+    width: 70vw;
   }
   .nav {
+    background: #23A455;
     padding: clamp(0.75rem, 2vw, 1rem);
   }
   .btn{
