@@ -109,12 +109,6 @@ ul{list-style:none}
     white-space: nowrap;
 }
 
-.logo img{
-    width: clamp(120px, 20vw, 96px);
-    height: clamp(120px, 20vw, 96px);
-    object-fit:contain;
-}
-
 /* primary nav */
 .primary-nav{
   display:flex;
@@ -302,7 +296,7 @@ textarea{
   resize:vertical;
 }
 .mobile-logo{
-  display: none;
+  width: 120px;
 }
 .form-footer{
   display:flex;
@@ -517,6 +511,9 @@ textarea{
   .container{flex-direction:column;padding:clamp(10px, 3vw, 12px) clamp(10px, 4vw, 12px)}
   aside{order:2}
   main{order:1}
+  .mobile-logo{
+    display: block;
+  }
 }
 
 @media (max-width:768px){
@@ -525,7 +522,8 @@ textarea{
   }
   .mobile-logo{
     display: block;
-}
+    width: 100px;
+  }
   main{
     height: 70vh;
   }
@@ -590,14 +588,19 @@ textarea{
   .primary-nav a{width:100%;text-align:center;padding:.5rem}
   .section-title{font-size:clamp(1.25rem, 4vw, 1.5rem)}
   .hero-text h1{font-size:clamp(1.3rem, 5vw, 1.75rem)}
-  .logo{
-    display: none;
-  }
   .hero{
     gap: 2em;
   }
-  .logo img {
-    width: 70vw;
+  .desktop-logo{
+    display: none;
+  }
+  .mobile-logo{
+    display: block;
+    width: 90px;
+  }
+  .logo span{
+    display: block;
+    font-size: 1.2rem;
   }
   .nav {
     background: #23A455;
