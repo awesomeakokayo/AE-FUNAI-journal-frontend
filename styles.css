@@ -518,14 +518,14 @@ textarea{
 
 @media (max-width:768px){
   header{
-    height: 30vh;
+    height: 27vh;
   }
   .mobile-logo{
     display: block;
     width: 100px;
   }
   main{
-    height: 70vh;
+    height: 73vh;
   }
   .downloadpdf{
     width: 25vw;
