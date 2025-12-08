@@ -581,7 +581,7 @@ textarea{
   .primary-nav a{width:100%;text-align:center;padding:.5rem}
   .section-title{font-size:clamp(1.25rem, 4vw, 1.5rem)}
   .hero-text h1{font-size:clamp(1.3rem, 5vw, 1.75rem)}
-  .logo span{
+  .logo{
     display: none;
   }
   .hero{

@@ -677,7 +677,7 @@ function initDetailsPage() {
         detailsSection.innerHTML = `
             <div class="empty-state">
                 <p>No journal ID provided.</p>
-                <a href="browse.html" class="btn btn-primary" style="margin-top:1rem;">Back to Browse</a>
+                <a href="current.html" class="btn btn-primary" style="margin-top:1rem;">Back to Browse</a>
             </div>
         `;
         return;
@@ -703,7 +703,7 @@ function initDetailsPage() {
             detailsSection.innerHTML = `
                 <div class="empty-state">
                     <p>Failed to load journal: ${error.message}</p>
-                    <a href="browse.html" class="btn btn-primary" style="margin-top:1rem;">Back to Browse</a>
+                    <a href="current.html" class="btn btn-primary" style="margin-top:1rem;">Back to Browse</a>
                 </div>
             `;
         }
