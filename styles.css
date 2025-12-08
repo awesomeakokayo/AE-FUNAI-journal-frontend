@@ -37,6 +37,9 @@ a:hover{
   color: var(--ojs-link-color);
   border: 1px solid var(--ojs-link-color);
 }
+.downloadpdf-icon{
+  width: 10px;
+}
 .issues{
   color: var(--ojs-link-color);
   font-weight: bold;
