@@ -862,7 +862,7 @@ function initAdminSubmissionsPage() {
                     if (!submission) return;
                     
                     // Ask for category (optional)
-                    const category = prompt('Enter category (optional, press Cancel to skip):');
+                    const category = prompt('Enter Volume number e.g. Vol 10 No 3 (2025): FUOYE JOURNAL OF ENGINEERING AND TECHNOLOGY');
                     if (category === null) return; // User cancelled
                     
                     // Disable button
@@ -908,7 +908,7 @@ function initHomePage() {
     const loadLatest = async () => {
         try {
             const journals = await api.listJournals();
-            const latest = journals.slice(0, 3); // Show only 3 latest
+            const latest = journals.slice(0, 7); // Show only 3 latest
             
             if (!latest || latest.length === 0) {
                 latestContainer.innerHTML = `
