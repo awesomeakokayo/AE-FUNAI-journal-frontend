@@ -1323,8 +1323,8 @@ function initAdminMyJournalsPage() {
                 <article class="journal-card">
                     <h3>${journal.title || 'Untitled'}</h3>
                     <div class="journal-meta">
-                        <span class="badge">👤 ${journal.authors || 'Unknown Author'}</span>
-                        ${journal.category ? `<span class="badge">📁 ${journal.category}</span>` : ''}
+                        <span class="badge"> ${journal.authors || 'Unknown Author'}</span>
+                        ${journal.category ? `<span class="badge"> ${journal.category}</span>` : ''}
                         <span class="pill">Published ${formatDate(journal.upload_date)}</span>
                     </div>
                     ${journal.abstract ? `<p>${truncateText(journal.abstract, 150)}</p>` : ''}
