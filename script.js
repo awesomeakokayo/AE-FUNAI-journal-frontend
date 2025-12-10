@@ -919,16 +919,21 @@ function initHomePage() {
                 return;
             }
             
-            // Group journals by category and get the latest from each
+            // Group journals by category and get the latest 5 from each
             const grouped = {};
             journals.forEach((journal) => {
                 const category = journal.category || 'Uncategorized';
                 if (!grouped[category]) {
-                    grouped[category] = journal; // Keep only the first (latest) one
+                    grouped[category] = [];
                 }
+                grouped[category].push(journal);
             });
             
-            const latestByCategory = Object.values(grouped);
+            // Get first 5 journals from each category
+            const latestByCategory = [];
+            Object.values(grouped).forEach((categoryJournals) => {
+                latestByCategory.push(...categoryJournals.slice(0, 5));
+            });
             
             if (latestByCategory.length === 0) {
                 latestContainer.innerHTML = `
