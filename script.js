@@ -666,7 +666,7 @@ function initBrowsePage() {
                     <span class="pill">Uploaded ${formatDate(journal.upload_date)}</span>
                 </div>
                 <div class="journal-actions">
-                    <a  href="${api.getDownloadUrl(journal.id)}" class="downloadpdf" data-journal-id="${journal.id}" onclick="event.preventDefault(); downloadJournalFile(${journal.id}).catch(err => alert('Download failed: ' + err.message));"><img class="downloadpdf-icon" src='https://img.icons8.com/?size=15&id=86297&format=png&color=1a5a96'> PDF</a>
+                    <a  href="${api.getDownloadUrl(journal.id)}" class="downloadpdf" ><img class="downloadpdf-icon" src='https://img.icons8.com/?size=15&id=86297&format=png&color=1a5a96'> PDF</a>
                 </div>
             </article>
         `).join('');
@@ -1002,7 +1002,7 @@ function initHomePage() {
                         
                     </div>
                     <div class="journal-actions">
-                        <a  href="${api.getDownloadUrl(journal.id)}" class="downloadpdf" data-journal-id="${journal.id}" onclick="event.preventDefault(); downloadJournalFile(${journal.id}).catch(err => alert('Download failed: ' + err.message));"><img class="downloadpdf-icon" src='https://img.icons8.com/?size=15&id=86297&format=png&color=1a5a96'> PDF</a>
+                        <a  href="${api.getDownloadUrl(journal.id)}" class="downloadpdf"><img class="downloadpdf-icon" src='https://img.icons8.com/?size=15&id=86297&format=png&color=1a5a96'> PDF</a>
                     </div>
                 </article>
             `
@@ -1048,7 +1048,7 @@ function initCurrentPage() {
                 ${journal.abstract ? `<p>${truncateText(journal.abstract, 150)}</p>` : ''}
                 <div class="journal-actions">
                     <a href="details.html?id=${journal.id}" class="btn btn-primary">View Details</a>
-                    <a  href="${api.getDownloadUrl(journal.id)}" class="downloadpdf" data-journal-id="${journal.id}" onclick="event.preventDefault(); downloadJournalFile(${journal.id}).catch(err => alert('Download failed: ' + err.message));"><img class="downloadpdf-icon" src='https://img.icons8.com/?size=15&id=86297&format=png&color=1a5a96'> PDF</a>
+                    <a  href="${api.getDownloadUrl(journal.id)}" class="downloadpdf" ><img class="downloadpdf-icon" src='https://img.icons8.com/?size=15&id=86297&format=png&color=1a5a96'> PDF</a>
                 </div>
             </article>
         `).join('');
