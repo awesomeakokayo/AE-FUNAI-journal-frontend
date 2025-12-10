@@ -733,7 +733,11 @@ function initDetailsPage() {
             authorEl.textContent = `Author: ${journal.authors || 'Unknown'}`;
             dateEl.textContent = `Uploaded ${formatDate(journal.upload_date)}`;
             abstractEl.textContent = journal.abstract || 'No abstract provided.';
-            downloadEl.href = api.getDownloadUrl(journal.id);
+            downloadEl.href = '#';
+            downloadEl.onclick = (e) => {
+                e.preventDefault();
+                downloadJournalFile(journal.id).catch(err => alert('Download failed: ' + err.message));
+            };
         } catch (error) {
             detailsSection.innerHTML = `
                 <div class="empty-state">
@@ -998,7 +1002,7 @@ function initHomePage() {
                         
                     </div>
                     <div class="journal-actions">
-                        <a href="${api.getDownloadUrl(journal.id)}" class="downloadpdf" target="_blank" rel="noopener"><img class="downloadpdf-icon" src='https://img.icons8.com/?size=15&id=86297&format=png&color=1a5a96'> PDF</a>
+                        <a href="#" class="downloadpdf" data-journal-id="${journal.id}" onclick="event.preventDefault(); downloadJournalFile(${journal.id}).catch(err => alert('Download failed: ' + err.message));"><img class="downloadpdf-icon" src='https://img.icons8.com/?size=15&id=86297&format=png&color=1a5a96'> PDF</a>
                     </div>
                 </article>
             `
@@ -1044,7 +1048,7 @@ function initCurrentPage() {
                 ${journal.abstract ? `<p>${truncateText(journal.abstract, 150)}</p>` : ''}
                 <div class="journal-actions">
                     <a href="details.html?id=${journal.id}" class="btn btn-primary">View Details</a>
-                    <a href="${api.getDownloadUrl(journal.id)}" class="downloadpdf" target="_blank" rel="noopener"><img class="downloadpdf-icon" src='https://img.icons8.com/?size=15&id=86297&format=png&color=1a5a96'> PDF</a>
+                    <a href="#" class="downloadpdf" data-journal-id="${journal.id}" onclick="event.preventDefault(); downloadJournalFile(${journal.id}).catch(err => alert('Download failed: ' + err.message));"><img class="downloadpdf-icon" src='https://img.icons8.com/?size=15&id=86297&format=png&color=1a5a96'> PDF</a>
                 </div>
             </article>
         `).join('');
