@@ -864,7 +864,7 @@ function initAdminSubmissionsPage() {
                     </div>
                     ${sub.abstract ? `<p>${truncateText(sub.abstract, 150)}</p>` : ''}
                     <div class="journal-actions">
-                        <button class="btn btn-outline" data-action="download-submission" data-id="${sub.id}">Download</button>
+                        <a href="${api.getDownloadUrl(journal.id)}"><button class="btn btn-outline">Download</button></a> 
                         ${sub.status === 'pending' ? `
                             <button class="btn btn-primary" data-id="${sub.id}" data-action="approve-upload">Approve & Upload</button>
                         ` : ''}
