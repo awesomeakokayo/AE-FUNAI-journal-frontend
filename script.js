@@ -248,6 +248,41 @@ const api = {
     },
 };
 
+const downloadJournalFile = async (journalId) => {
+    const token = getToken();
+    if (!token) {
+      throw new Error("Please login to download this journal.");
+    }
+
+    const response = await fetch(
+      `${API_BASE_URL}/journals/${journalId}/download`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (!response.ok) {
+        const errorText = await response.text().catch(() => null);
+        throw new Error(errorText || `Failed to download journal (HTTP ${response.status}).`);
+    }
+
+    const blob = await response.blob();
+    const filename = extractFilenameFromHeader(
+        response.headers.get('Content-Disposition'),
+        `journal-${journalId}.pdf`
+    );
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+};
+
 const downloadSubmissionFile = async (submissionId, useAdmin = true) => {
     const token = getAdminToken() || getToken();
     if (!token) {
@@ -631,7 +666,7 @@ function initBrowsePage() {
                     <span class="pill">Uploaded ${formatDate(journal.upload_date)}</span>
                 </div>
                 <div class="journal-actions">
-                    <a href="${api.getDownloadUrl(journal.id)}" class="downloadpdf" target="_blank" rel="noopener"><img class="downloadpdf-icon" src='https://img.icons8.com/?size=15&id=86297&format=png&color=1a5a96'> PDF</a>
+                    <a href="#" class="downloadpdf" data-journal-id="${journal.id}" onclick="event.preventDefault(); downloadJournalFile(${journal.id}).catch(err => alert('Download failed: ' + err.message));"><img class="downloadpdf-icon" src='https://img.icons8.com/?size=15&id=86297&format=png&color=1a5a96'> PDF</a>
                 </div>
             </article>
         `).join('');
