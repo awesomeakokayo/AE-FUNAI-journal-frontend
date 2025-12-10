@@ -525,7 +525,7 @@ textarea{
     width: 100px;
   }
   main{
-    height: 73vh;
+    min-height: 73vh;
   }
   .downloadpdf{
     width: 22vw;
