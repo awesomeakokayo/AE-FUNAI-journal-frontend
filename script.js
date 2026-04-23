@@ -10,6 +10,7 @@ const ICONS = {
   user: '<svg class="icon-svg icon-svg-sm icon-svg-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>',
   mail: '<svg class="icon-svg icon-svg-sm icon-svg-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>',
   folder: '<svg class="icon-svg icon-svg-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>',
+  file: '<svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><path d="M12 18v-6"/><path d="M9 15l3-3 3 3"/></svg>',
   arrowLeft: '<svg class="icon-svg icon-svg-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>'
 };
 
@@ -677,7 +678,7 @@ function initBrowsePage() {
                     <span class="pill">Uploaded ${formatDate(journal.upload_date)}</span>
                 </div>
                 <div class="journal-actions">
-                    <a  href="${api.getDownloadUrl(journal.id)}" class="downloadpdf" ><img class="downloadpdf-icon" src='https://img.icons8.com/?size=15&id=86297&format=png&color=1a5a96'> PDF</a>
+                    <a href="${api.getDownloadUrl(journal.id)}" class="downloadpdf">${ICONS.file} PDF</a>
                 </div>
             </article>
         `).join('');
@@ -1059,7 +1060,7 @@ function initCurrentPage() {
                 ${journal.abstract ? `<p>${truncateText(journal.abstract, 150)}</p>` : ''}
                 <div class="journal-actions">
                     <a href="details.html?id=${journal.id}" class="btn btn-primary">View Details</a>
-                    <a  href="${api.getDownloadUrl(journal.id)}" class="downloadpdf" ><img class="downloadpdf-icon" src='https://img.icons8.com/?size=15&id=86297&format=png&color=1a5a96'> PDF</a>
+                    <a href="${api.getDownloadUrl(journal.id)}" class="downloadpdf">${ICONS.file} PDF</a>
                 </div>
             </article>
         `).join('');
