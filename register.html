@@ -1,65 +1,130 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Create Account · AE-FUNAI Journals</title>
+
     <link rel="stylesheet" href="styles.css">
+
 </head>
+
 <body>
+
     <header>
+
         <nav class="nav">
+
             <a href="index.html" class="logo">
+
                 <img class="mobile-logo" src="aefunai_logo.png" alt="AE-FUNAI">
+
                 <span>AE-FUNAI Journal of Education</span>
+
             </a>
-            <!-- <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">☰</button> -->
+
+            <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu" aria-expanded="false"><svg class="icon-svg icon-svg-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+
             <div class="nav-links" id="navLinks">
+
                 <a href="index.html">Home</a>
+
                 <!-- <a href="browse.html">Browse</a> -->
+
                 <a href="login.html">Login</a>
+
                 <a href="submit.html">Submit</a>
+
                 <a href="register.html" class="btn btn-outline active">Create Account</a>
+
             </div>
+
         </nav>
+
     </header>
 
+
+
     <main>
+
         <section class="container form-card">
+
             <h1 class="section-title" style="text-align:center;">Create Your Account</h1>
+
             <p class="section-subtitle" style="text-align:center;">Register with your AE-FUNAI email to publish and explore journals.</p>
+
             <form id="registerForm" novalidate>
+
                 <div>
+
                     <label for="fullName">Full Name</label>
+
                     <input type="text" id="fullName" name="fullName" placeholder="e.g. Dr. Adaobi Nkem" required>
+
                 </div>
+
                 <div>
+
                     <label for="registerEmail">Email</label>
+
                     <input type="email" id="registerEmail" name="email" placeholder="firstname.lastname@funai.edu.ng" required>
+
                 </div>
+
                 <div>
+
                     <label for="password">Password</label>
+
                     <input type="password" id="password" name="password" placeholder="Create a strong password" minlength="6" required>
+
                 </div>
+
                 <div>
+
                     <label for="confirmPassword">Confirm Password</label>
+
                     <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Re-type your password" minlength="6" required>
+
                 </div>
+
                 <div id="registerFeedback" class="alert" style="display:none;"></div>
+
                 <button type="submit" class="btn btn-primary">Create Account</button>
+
                 <div class="form-footer">
+
                     <span>Already registered?</span>
+
                     <a href="login.html">Login instead</a>
+
                 </div>
+
             </form>
+
         </section>
+
     </main>
 
+
+
     <footer class="footer">
-        <p>&copy; <span id="year"></span> Alex Ekwueme Federal University Ndufu-Alike.</p>
+
+        <p>&copy; <span id="year"></span> Alex Ekwueme Federal University Ndufu-Alike. <span class="issn">ISSN: 2992-3883</span></p>
+
     </footer>
 
+
+
     <script src="script.js" defer></script>
+
 </body>
+
 </html>
+
+
 

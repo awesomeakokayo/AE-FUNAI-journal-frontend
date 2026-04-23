@@ -1,70 +1,140 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Submit Journal · AE-FUNAI Journals</title>
+
     <link rel="stylesheet" href="styles.css">
+
 </head>
+
 <body>
+
     <header>
+
         <nav class="nav">
+
             <a href="index.html" class="logo">
+
                 <img class="mobile-logo" src="aefunai_logo.png" alt="AE-FUNAI">
+
                 <span>AE-FUNAI Journal of Education</span>
+
             </a>
-            <!-- <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">☰</button> -->
+
+            <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu" aria-expanded="false"><svg class="icon-svg icon-svg-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+
             <div class="nav-links" id="navLinks">
+
                 <a href="index.html">Home</a>
+
                 <!-- <a href="browse.html">Browse</a> -->
+
                 <a href="login.html">Login</a>
+
                 <a href="submit.html" class="active">Submit</a>
+
                 <a href="register.html" class="btn btn-outline">Create Account</a>
+
             </div>
+
         </nav>
+
     </header>
 
+
+
     <main>
+
         <section class="container form-card">
+
             <h1 class="section-title" style="text-align:center;">Submit Journal for Review</h1>
+
             <p class="section-subtitle" style="text-align:center;">Submit your journal in DOC, DOCX, or PDF format. It will be sent for review and published if approved.</p>
+
             <form id="submitForm" novalidate>
+
                 <div>
+
                     <label for="authorName">Author Name</label>
+
                     <input type="text" id="authorName" name="author" placeholder="Primary author full name" required>
+
                 </div>
+
                 <div>
+
                     <label for="paperTitle">Paper Title</label>
+
                     <input type="text" id="paperTitle" name="title" placeholder="e.g. Renewable Energy Adoption in Rural Nigeria" required>
+
                 </div>
+
                 <div>
+
                     <label for="abstract">Abstract / Short Description</label>
+
                     <textarea id="abstract" name="abstract" maxlength="1500" placeholder="Summarize your paper in 150-200 words." required></textarea>
+
                 </div>
+
                 <div>
+
                     <label for="fileUpload">Upload Document</label>
+
                     <div class="file-input-wrapper">
+
                         <label class="file-label" for="fileUpload">
-                            <span class="icon">📄</span>
+
+                            <span class="icon"><svg class="icon-svg icon-svg-lg icon-svg-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg></span>
+
                             <div>
+
                                 <strong>Choose Document</strong>
+
                                 <p style="color:var(--muted); margin:0;">Max 15MB · DOC, DOCX, or PDF</p>
+
                             </div>
+
                         </label>
+
                         <input type="file" id="fileUpload" name="file" accept=".doc,.docx,.pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/pdf" required>
+
                     </div>
+
                 </div>
+
                 <div id="submitFeedback" class="alert" style="display:none;"></div>
+
                 <button type="submit" class="btn btn-primary">Submit for Review</button>
+
             </form>
+
         </section>
+
     </main>
 
+
+
     <footer class="footer">
-        <p>&copy; <span id="year"></span> Alex Ekwueme Federal University Ndufu-Alike.</p>
+
+        <p>&copy; <span id="year"></span> Alex Ekwueme Federal University Ndufu-Alike. <span class="issn">ISSN: 2992-3883</span></p>
+
     </footer>
 
+
+
     <script src="script.js" defer></script>
+
 </body>
+
 </html>
+
+
 

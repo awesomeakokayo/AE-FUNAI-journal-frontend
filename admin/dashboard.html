@@ -1,56 +1,112 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Admin Dashboard · AE-FUNAI Journals</title>
+
     <link rel="stylesheet" href="../styles.css">
+
 </head>
+
 <body>
+
     <header>
+
         <nav class="nav">
+
             <a href="index.html" class="logo">
+
                 <img class="mobile-logo" src="aefunai_logo.png" alt="AE-FUNAI">
+
                 <span>AE-FUNAI Journal of Education</span>
+
             </a>
-            <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">☰</button>
+
+            <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu"><svg class="icon-svg icon-svg-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+
             <div class="nav-links" id="navLinks">
+
                 <a href="index.html" class="active">Admin Dashboard</a>
+
                 <a href="upload.html">Upload Journal</a>
+
                 <a href="my-journals.html">Journals</a>
+
                 <a href="../login.html" data-action="logout">Logout</a>
+
             </div>
+
         </nav>
+
     </header>
 
+
+
     <main>
+
         <section class="container">
+
             <div class="hero-card" style="margin-bottom:2rem;">
+
                 <p class="badge">Admin Panel</p>
+
                 <h1 id="welcomeMessage">Admin Dashboard</h1>
+
                 <p>Review journal submissions and manage published journals.</p>
+
             </div>
+
+
 
             <div class="container">
+
                 <h2 class="section-title">Journal Submissions</h2>
+
                 <div style="margin-bottom: 1rem;">
+
                     <label for="statusFilter" style="margin-right: 1rem;">Filter by status:</label>
+
                     <select id="statusFilter" style="padding: 0.5rem; border-radius: 0.5rem; border: 1px solid var(--border);">
+
                         <option value="">All</option>
+
                         <option value="pending">Pending</option>
+
                         <option value="approved">Approved</option>
+
                         <option value="rejected">Rejected</option>
+
                     </select>
+
                 </div>
+
                 <div id="adminSubmissionsList" class="journal-list"></div>
+
             </div>
+
         </section>
+
     </main>
 
+
+
     <footer class="footer">
-        <p>&copy; <span id="year"></span> Alex Ekwueme Federal University Ndufu-Alike.</p>
+
+        <p>&copy; <span id="year"></span> Alex Ekwueme Federal University Ndufu-Alike. <span class="issn">ISSN: 2992-3883</span></p>
+
     </footer>
 
+
+
     <script src="../script.js" defer></script>
+
 </body>
+
 </html>
+

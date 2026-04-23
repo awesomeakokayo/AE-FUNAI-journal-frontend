@@ -2,6 +2,17 @@ const API_BASE_URL = "https://ae-funai-journal-backend.onrender.com";
 const TOKEN_KEY = 'journal_auth_token';
 const USER_KEY = 'journal_user_data';
 
+// ========== Premium SVG Icons ==========
+const ICONS = {
+  check: '<svg class="icon-svg icon-svg-sm icon-svg-success" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>',
+  x: '<svg class="icon-svg icon-svg-sm icon-svg-danger" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>',
+  clock: '<svg class="icon-svg icon-svg-sm icon-svg-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
+  user: '<svg class="icon-svg icon-svg-sm icon-svg-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>',
+  mail: '<svg class="icon-svg icon-svg-sm icon-svg-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>',
+  folder: '<svg class="icon-svg icon-svg-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>',
+  arrowLeft: '<svg class="icon-svg icon-svg-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>'
+};
+
 // ========== Utility Functions ==========
 const formatDate = (isoString) => {
     if (!isoString) return 'Unknown date';
@@ -773,14 +784,14 @@ function initMySubmissionsPage() {
             }
             
             listContainer.innerHTML = submissions.map((sub) => {
-                const statusBadge = sub.status === 'approved' ? '✅ Approved' 
-                    : sub.status === 'rejected' ? '❌ Rejected' 
-                    : '⏳ Pending';
+                const statusBadge = sub.status === 'approved' ? `${ICONS.check} Approved`
+                    : sub.status === 'rejected' ? `${ICONS.x} Rejected`
+                    : `${ICONS.clock} Pending`;
                 return `
                 <article class="journal-card">
                     <h3>${sub.title || 'Untitled'}</h3>
                     <div class="journal-meta">
-                        <span class="badge">👤 ${sub.authors || 'Unknown Author'}</span>
+                        <span class="badge">${ICONS.user} ${sub.authors || 'Unknown Author'}</span>
                         <span class="pill">${statusBadge}</span>
                         <span class="pill">Submitted ${formatDate(sub.submitted_at)}</span>
                     </div>
@@ -850,15 +861,15 @@ function initAdminSubmissionsPage() {
             }
             
             listContainer.innerHTML = submissions.map((sub) => {
-                const statusBadge = sub.status === 'approved' ? '✅ Approved' 
-                    : sub.status === 'rejected' ? '❌ Rejected' 
-                    : '⏳ Pending';
+                const statusBadge = sub.status === 'approved' ? `${ICONS.check} Approved`
+                    : sub.status === 'rejected' ? `${ICONS.x} Rejected`
+                    : `${ICONS.clock} Pending`;
                 return `
                 <article class="journal-card">
                     <h3>${sub.title || 'Untitled'}</h3>
                     <div class="journal-meta">
-                        <span class="badge">👤 ${sub.authors || 'Unknown Author'}</span>
-                        <span class="badge">📧 ${sub.submitter_email || 'Unknown'}</span>
+                        <span class="badge">${ICONS.user} ${sub.authors || 'Unknown Author'}</span>
+                        <span class="badge">${ICONS.mail} ${sub.submitter_email || 'Unknown'}</span>
                         <span class="pill">${statusBadge}</span>
                         <span class="pill">Submitted ${formatDate(sub.submitted_at)}</span>
                     </div>
@@ -1106,7 +1117,7 @@ function initArchivesPage() {
             if (categoriesContainer) {
                 categoriesContainer.innerHTML = categories.map(cat => `
                     <button class="category-btn" data-category="${cat}">
-                        <span class="icon">📁</span>
+                        <span class="icon">${ICONS.folder}</span>
                         <span>${cat}</span>
                     </button>
                 `).join('');
@@ -1147,13 +1158,13 @@ function initArchivesPage() {
                 <article class="journal-card">
                     <h3>${journal.title || 'Untitled'}</h3>
                     <div class="journal-meta">
-                        <span class="badge"> ${journal.authors || 'Unknown Author'}</span>
+                        <span class="badge">${ICONS.user} ${journal.authors || 'Unknown Author'}</span>
                         <span class="pill">Published ${formatDate(journal.upload_date)}</span>
                     </div>
                     ${journal.abstract ? `<p>${truncateText(journal.abstract, 150)}</p>` : ''}
                     <div class="journal-actions">
                         <a href="details.html?id=${journal.id}" class="btn btn-primary">View Details</a>
-                        <a  href="${api.getDownloadUrl(journal.id)}" class="btn btn-outline" target="_blank" rel="noopener">▤ PDF</a>
+                        <a href="${api.getDownloadUrl(journal.id)}" class="btn btn-outline" target="_blank" rel="noopener">▤ PDF</a>
                     </div>
                 </article>
             `).join('');
@@ -1198,7 +1209,7 @@ function initArchivesPage() {
                                 <article class="journal-card">
                                     <h4>${journal.title || 'Untitled'}</h4>
                                     <div class="journal-meta">
-                                        <span class="badge">👤 ${journal.authors || 'Unknown Author'}</span>
+                                        <span class="badge">${ICONS.user} ${journal.authors || 'Unknown Author'}</span>
                                         <span class="pill">Published ${formatDate(journal.upload_date)}</span>
                                     </div>
                                     ${journal.abstract ? `<p>${truncateText(journal.abstract, 120)}</p>` : ''}
@@ -1305,24 +1316,58 @@ function initializeMobileMenu() {
     
     if (!menuToggle || !navLinks) return;
     
+    // Create overlay if it doesn't exist
+    let overlay = document.querySelector('.mobile-menu-overlay');
+    if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.className = 'mobile-menu-overlay';
+        document.body.appendChild(overlay);
+    }
+    
+    function openMenu() {
+        navLinks.classList.add('mobile-menu-active');
+        menuToggle.classList.add('active');
+        overlay.classList.add('active');
+        document.body.style.overflow = 'hidden'; // Prevent body scroll
+        menuToggle.setAttribute('aria-expanded', 'true');
+    }
+    
+    function closeMenu() {
+        navLinks.classList.remove('mobile-menu-active');
+        menuToggle.classList.remove('active');
+        overlay.classList.remove('active');
+        document.body.style.overflow = ''; // Restore body scroll
+        menuToggle.setAttribute('aria-expanded', 'false');
+    }
+    
     menuToggle.addEventListener('click', () => {
-        navLinks.classList.toggle('mobile-menu-active');
-        menuToggle.classList.toggle('active');
+        const isOpen = navLinks.classList.contains('mobile-menu-active');
+        if (isOpen) {
+            closeMenu();
+        } else {
+            openMenu();
+        }
     });
     
     // Close menu when a link is clicked
     navLinks.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', () => {
-            navLinks.classList.remove('mobile-menu-active');
-            menuToggle.classList.remove('active');
-        });
+        link.addEventListener('click', closeMenu);
     });
     
-    // Close menu when clicking outside
+    // Close menu when clicking overlay
+    overlay.addEventListener('click', closeMenu);
+    
+    // Close menu when clicking outside nav (fallback)
     document.addEventListener('click', (e) => {
-        if (!e.target.closest('.nav')) {
-            navLinks.classList.remove('mobile-menu-active');
-            menuToggle.classList.remove('active');
+        if (!e.target.closest('.nav') && navLinks.classList.contains('mobile-menu-active')) {
+            closeMenu();
+        }
+    });
+    
+    // Close menu on escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && navLinks.classList.contains('mobile-menu-active')) {
+            closeMenu();
         }
     });
 }

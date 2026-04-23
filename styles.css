@@ -351,18 +351,7 @@ textarea{
 .journal-title:hover{
   color: #2b6295;
 }
-.journal-card{
-  border-radius:.3rem;
-  padding:clamp(1rem, 3vw, 1.5rem);
-  border:1px solid var(--border);
-  background:var(--surface);
-  box-shadow:var(--shadow);
-  display:flex;
-  flex-direction:column;
-  gap:clamp(0.5rem, 1vw, 0.75rem);
-  border-bottom: 1px solid gray;
-  border-top: 1px solid gray;
-}
+
 .journal-meta{
   display:flex;
   align-items:center;
@@ -407,6 +396,100 @@ textarea{
   color:var(--primary);
   font-size:1.1rem;
   flex-shrink: 0;
+}
+
+/* Mobile Menu Overlay */
+.mobile-menu-overlay{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(4px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  z-index: 998;
+}
+.mobile-menu-overlay.active{
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Safe area support for modern mobile devices */
+@supports (padding-top: env(safe-area-inset-top)) {
+  .nav {
+    padding-top: max(1rem, env(safe-area-inset-top));
+  }
+  .nav-links.mobile-menu-active {
+    padding-top: max(1rem, env(safe-area-inset-top));
+  }
+}
+
+/* Touch feedback for mobile */
+@media (hover: none) and (pointer: coarse) {
+  .btn:active,
+  .category-btn:active,
+  .journal-card:active {
+    transform: scale(0.98);
+    transition: transform 0.1s ease;
+  }
+  .nav-links a:active {
+    background: rgba(255,255,255,0.15);
+  }
+}
+
+/* Premium SVG Icon System */
+.icon-svg{
+  width:1em;
+  height:1em;
+  display:inline-block;
+  vertical-align:middle;
+  flex-shrink:0;
+}
+.icon-svg-sm{
+  width:0.875em;
+  height:0.875em;
+}
+.icon-svg-lg{
+  width:1.25em;
+  height:1.25em;
+}
+.icon-svg-primary{
+  color:var(--primary);
+}
+.icon-svg-success{
+  color:var(--success);
+}
+.icon-svg-danger{
+  color:var(--danger);
+}
+.icon-svg-muted{
+  color:var(--muted);
+}
+
+/* Premium subtle enhancements */
+.journal-card{
+  border-radius:.3rem;
+  padding:clamp(1rem, 3vw, 1.5rem);
+  border:1px solid var(--border);
+  background:var(--surface);
+  box-shadow:0 2px 8px rgba(15,76,129,0.04), 0 1px 3px rgba(0,0,0,0.02);
+  display:flex;
+  flex-direction:column;
+  gap:clamp(0.5rem, 1vw, 0.75rem);
+  border-bottom: 1px solid #d1d5db;
+  border-top: 1px solid #d1d5db;
+  transition:box-shadow 0.2s ease, transform 0.2s ease;
+}
+.journal-card:hover{
+  box-shadow:0 4px 16px rgba(15,76,129,0.08), 0 2px 6px rgba(0,0,0,0.03);
+}
+
+/* ISSN styling */
+.issn{
+  font-family: 'Times New Roman', Times, serif;
+  font-weight:500;
+  letter-spacing:0.02em;
+  color:rgba(255,255,255,0.9);
 }
 
 /* search */
@@ -506,6 +589,11 @@ textarea{
 }
 .footer a{color:#fff;font-weight:600}
 
+/* Hide menu toggle on desktop, show only on mobile */
+.menu-toggle{
+  display: none;
+}
+
 /* responsive tweaks */
 @media (max-width:900px){
   .container{flex-direction:column;padding:clamp(10px, 3vw, 12px) clamp(10px, 4vw, 12px)}
@@ -538,32 +626,73 @@ textarea{
     display: flex;
     flex-direction: column;
   }
-  .nav-links {
-    position: absolute;
-    top: 20%;
-    left: 0;
-    right: 0;
-    background: #23A455;
-    flex-direction: row;
-    padding: 1rem;
-    box-shadow: var(--shadow);
-    border-bottom: 1px solid var(--border);
-    width: 100%;
-    gap: clamp(0.5rem, 1vw, 0.75rem);
-    z-index: 24;
-  }
-  
-  .nav-links.mobile-menu-active {
-    display: flex;
-  }
-  
   .nav {
     flex-wrap: nowrap;
     justify-content: space-between;
+    position: relative;
+  }
+  
+  .nav-links {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: min(80vw, 300px);
+    background: #23A455;
+    flex-direction: column;
+    padding: 5rem 1.5rem 1.5rem;
+    box-shadow: -4px 0 20px rgba(0,0,0,0.2);
+    gap: 0.5rem;
+    z-index: 999;
+    transform: translateX(100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow-y: auto;
+  }
+  
+  .nav-links.mobile-menu-active {
+    transform: translateX(0);
+  }
+  
+  .nav-links a {
+    padding: 1rem;
+    border-radius: 0.5rem;
+    font-size: 1.1rem;
+    transition: background-color 0.2s ease;
+    width: 100%;
+    text-align: left;
+    color: white;
+  }
+  
+  .nav-links a:hover,
+  .nav-links a.active {
+    background: rgba(255,255,255,0.15);
+    color: white;
+  }
+  
+  .nav-links .btn {
+    margin-top: 0.5rem;
+    width: 100%;
+    justify-content: center;
   }
   
   .menu-toggle{
     display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    transition: background-color 0.2s ease;
+  }
+  .menu-toggle:hover{
+    background-color: rgba(255,255,255,0.1);
+  }
+  .menu-toggle svg{
+    width: 24px;
+    height: 24px;
   }
   
   .header .wrap{flex-direction:row;align-items:center}
