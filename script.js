@@ -1165,7 +1165,7 @@ function initArchivesPage() {
                     ${journal.abstract ? `<p>${truncateText(journal.abstract, 150)}</p>` : ''}
                     <div class="journal-actions">
                         <a href="details.html?id=${journal.id}" class="btn btn-primary">View Details</a>
-                        <a href="${api.getDownloadUrl(journal.id)}" class="btn btn-outline" target="_blank" rel="noopener">▤ PDF</a>
+                        <a href="${api.getDownloadUrl(journal.id)}" class="btn btn-outline" target="_blank" rel="noopener">${ICONS.file} PDF</a>
                     </div>
                 </article>
             `).join('');
@@ -1216,7 +1216,7 @@ function initArchivesPage() {
                                     ${journal.abstract ? `<p>${truncateText(journal.abstract, 120)}</p>` : ''}
                                     <div class="journal-actions">
                                         <a href="details.html?id=${journal.id}" class="btn btn-primary">View Details</a>
-                                        <a href="${api.getDownloadUrl(journal.id)}" class="btn btn-outline" target="_blank" rel="noopener">▤ PDF</a>
+                                        <a href="${api.getDownloadUrl(journal.id)}" class="btn btn-outline" target="_blank" rel="noopener">${ICONS.file} PDF</a>
                                     </div>
                                 </article>
                             `).join('')}
