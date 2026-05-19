@@ -68,6 +68,10 @@ const setUser = (user) => localStorage.setItem(USER_KEY, JSON.stringify(user));
 const removeUser = () => localStorage.removeItem(USER_KEY);
 const isAuthenticated = () => !!getToken();
 
+/** Resolves to the site root `login.html` whether the current page is under `/admin/` or not. */
+const loginPageHref = () =>
+    window.location.pathname.includes('/admin/') ? '../login.html' : 'login.html';
+
 // ========== API Helper Functions ==========
 const apiRequest = async (endpoint, options = {}) => {
     const url = `${API_BASE_URL}${endpoint}`;
@@ -100,8 +104,13 @@ const apiRequest = async (endpoint, options = {}) => {
             // Token expired or invalid
             removeToken();
             removeUser();
-            if (window.location.pathname !== '/login.html' && window.location.pathname !== '/index.html') {
-                window.location.href = 'login.html';
+            const path = window.location.pathname;
+            const onLogin =
+                path.endsWith('/login.html') || path.endsWith('login.html');
+            const onIndex =
+                path.endsWith('/index.html') || path.endsWith('index.html');
+            if (!onLogin && !onIndex) {
+                window.location.href = loginPageHref();
             }
         }
         throw error;
@@ -333,19 +342,34 @@ const downloadSubmissionFile = async (submissionId, useAdmin = true) => {
 // ========== Authentication Guards ==========
 const requireAuth = () => {
     if (!isAuthenticated()) {
-        window.location.href = 'login.html';
+        window.location.href = loginPageHref();
         return false;
     }
     return true;
 };
 
 const requireAdmin = async () => {
-    if (!requireAuth()) return false;
     const user = getUser();
-    // Check if user is admin (either from database or auth.py admin)
+    const inAdminDir = window.location.pathname.includes('/admin/');
+    const adminToken = getAdminToken();
+
+    // Dedicated admin login stores `journal_admin_token` without a regular user JWT
+    if (
+        adminToken &&
+        user &&
+        (user.is_admin === 1 || user.email === 'admin@admin')
+    ) {
+        return true;
+    }
+
+    if (!isAuthenticated()) {
+        window.location.href = inAdminDir ? 'index.html' : loginPageHref();
+        return false;
+    }
+
     if (!user || (user.is_admin !== 1 && user.email !== 'admin@admin')) {
         alert('Admin access required');
-        window.location.href = 'index.html';
+        window.location.href = inAdminDir ? '../index.html' : 'index.html';
         return false;
     }
     return true;
@@ -355,6 +379,7 @@ const requireAdmin = async () => {
 const logout = () => {
     removeToken();
     removeUser();
+    removeAdminToken();
     window.location.href = 'index.html';
 };
 
